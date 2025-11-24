@@ -11,7 +11,7 @@ export const Sidebar = ({isOpen}) => {
     return(
         <>
         {/* <div>This is Sidebar.</div> */}
-        <div className={`relative ${isOpen ? "w-70" : "w-0 overflow-hidden"}`}>
+        <div className={`relative transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
 
 
         <div className='bg-white w-70 h-253 absolute'>
