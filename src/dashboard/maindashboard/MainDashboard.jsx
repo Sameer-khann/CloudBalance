@@ -11,12 +11,13 @@ export const MainDashboard = () => {
     return (
         <>
             <Header toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
-            <Sidebar isOpen={isSidebarOpen} />
-            <div className=" bg-gray-200 h-dvh flex items-center justify-center" >
-                <Outlet />
-                {/* <p>This is DashBoard</p> */}
+            <div className="flex h-auto  ">
+                <Sidebar isOpen={isSidebarOpen} />
+                <div className={` bg-gray-200 ${isSidebarOpen ? 'w-5/6' : 'w-full'} h-auto flex items-center justify-start`} >
+                    <Outlet />
+                    {/* <p>This is DashBoard</p> */}
+                </div>
             </div>
-
         </>
     )
 }

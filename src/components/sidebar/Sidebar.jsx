@@ -11,10 +11,10 @@ export const Sidebar = ({isOpen}) => {
     return(
         <>
         {/* <div>This is Sidebar.</div> */}
-        <div className={`relative transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        {/* <div className={` transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}> */}
 
 
-        <div className='bg-white w-70 h-253 absolute'>
+        <div className={`bg-white w-1/6 h-253   transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full hidden'}`}>
            
                 <ul className='py-10 flex flex-col gap-4 pl-4'>
                     <li className='flex flex-row gap-4 hover:bg-[#d1edff] mr-4 p-2 rounded-lg'>
@@ -32,7 +32,7 @@ export const Sidebar = ({isOpen}) => {
                 </ul>
     
         </div>
-        </div>
+        {/* </div> */}
 
         {/* <div className='bg-gray-500 size-auto'></div> */}
         </>
