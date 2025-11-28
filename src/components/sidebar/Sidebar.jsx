@@ -3,10 +3,12 @@ import React from 'react'
 import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
 import ScreenSearchDesktopOutlinedIcon from '@mui/icons-material/ScreenSearchDesktopOutlined';
 import MemoryOutlinedIcon from '@mui/icons-material/MemoryOutlined';
+import { useSelector } from 'react-redux';
 
 
-export const Sidebar = ({isOpen}) => {
+export const Sidebar = () => {
 
+    const isOpen = useSelector(state => state.sidebar.open)
 
     return(
         <>

@@ -1,15 +1,16 @@
 
 const initialValues = {
-    open : true
+    open: true
 }
 
 export const toggleReducer = (state = initialValues, action) => {
-    if(action.type == 'SIDEBARTOGGLE'){
-        return{
-            ...state, open : !state.open
+    if (action.type == 'SIDEBARTOGGLE') {
+        return {
+            ...state,
+            open: !state.open
         }
     }
-    else{
+    else {
         return state
     }
 }

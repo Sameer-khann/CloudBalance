@@ -6,16 +6,32 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import { useDispatch } from 'react-redux';
+import { sidebarToggle } from '../../redux/actions';
+import { useNavigate } from 'react-router-dom';
+// import { toggleReducer } from '../../redux/reducer';
 
 
-export const Header = ({toggleSidebar}) => {
+
+export const Header = () => {
+
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.clear("Islogin");
+        navigate('/');
+    }
+
+
+    const dispatch = useDispatch();
+
     return (
         <>
 
             <div className=" w-full flex items-center justify-between px-6 shadow-lg z-100">
                 <div className="flex flex-row items-center gap-7 " >
                     <img className='h-14 my-2 pb-2' src={logo} alt="logo img" />
-                    <div onClick={toggleSidebar} className='text-[#4398d7]' ><MenuIcon /></div>
+                    <div onClick={() => dispatch(sidebarToggle())} className='text-[#4398d7]' ><MenuIcon /></div>
                     <div className='mt-4'>
                         <div className='font-medium text-xs' >Module</div>
                         <div className='flex flex-row h-8 '>
@@ -33,9 +49,9 @@ export const Header = ({toggleSidebar}) => {
                         </div>
                     </div>
                     <div className='w-0.5 h-10 bg-gray-200'></div>
-                    <div className='flex flex-row border-1 border-[#0741a7] rounded-sm p-1'>
+                    <div className='flex flex-row border border-[#0741a7] rounded-sm p-1'>
                         <div className='text-[#0741a7]'><LogoutOutlinedIcon/></div>
-                        <div className='text-[#0741a7]'>Logout</div>
+                        <div className='text-[#0741a7] cursor-pointer ' onClick={handleLogout}>Logout</div>
                     </div>
                 </div>
             </div>

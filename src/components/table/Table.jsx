@@ -16,7 +16,7 @@
             </tr>
             </thead>
 
-            <div className="w-full bg-white h-0.5"></div>
+            {/* <div className="w-full bg-white h-0.5"></div> */}
 
             <tbody>
             {data.map((row, rowIndex) => (
