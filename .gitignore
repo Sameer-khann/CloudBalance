@@ -1,0 +1,18 @@
+# --- Frontend ---
+node_modules/
+dist/
+build/
+.next/
+.env
+
+# --- Backend (Spring Boot / Gradle) ---
+target/
+.gradle/
+build/
+*.log
+
+# --- OS & IDE ---
+.DS_Store
+*.iml
+.idea/
+.vscode/
