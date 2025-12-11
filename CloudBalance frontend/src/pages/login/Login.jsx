@@ -8,6 +8,9 @@ export const Login = () => {
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')
 
+    const [emptyName, setEmptyName] = useState(false)
+    const [emptyPassword, setEmptyPassword] = useState(false)
+
     const navigate = useNavigate();
 
 
@@ -15,10 +18,16 @@ export const Login = () => {
         if (name && password) {
             localStorage.setItem("Islogin", "true");
             navigate('/dashboard')
-
-
-        } else {
-            alert("no user detail")
+        }
+        else if(!name){
+            setEmptyName(true)
+        }
+        else if(!password){
+            setEmptyPassword(true)
+        }
+        else {
+            setEmptyName(true)
+            setEmptyPassword(true)
         }
 
         // console.log("name : ", name);
@@ -43,15 +52,22 @@ export const Login = () => {
                             <label className='text-left text-[14px] text-[#333]' htmlFor="username">Username</label>
                             <br />
                             <input onChange={(e) => setName(e.target.value)} className='border border-[#DBDBDB] w-[471px] h-[43px] mt-3.5 rounded-sm px-3 placeholder:text-[#DBDBDB]' id='username' type='text' placeholder='Username' required />
+                            {emptyName && 
+                            <p className="text-red-500 text-sm mt-1">This field is required</p>
+                            }
                         </div>
 
 
                         <div className=''>
                             <label className='text-left text-[14px] text-[#333]' htmlFor="password">Password</label>
                             <br />
-                            <input onChange={(e) => setPassword(e.target.value)} className='border border-[#DBDBDB] w-[471px] h-[43px] mt-3.5 rounded-sm px-3' id='password' type='password' placeholder='Password' required />
+                            <input onChange={(e) => setPassword(e.target.value)} className='border border-[#DBDBDB] w-[471px] h-[43px] mt-3.5 rounded-sm px-3 placeholder:text-[#DBDBDB]' id='password' type='password' placeholder='Password' required />
+
+                            {emptyPassword && 
+                            <p className="text-red-500 text-sm mt-1">This field is required</p>
+                            }
                         </div>
-                        <a className='text-right text-[#4398d7] font-medium text-xs w-[471px] pt-5' href="">Forgot Password?</a>
+                        {/* <a className='text-right text-[#4398d7] font-medium text-xs w-[471px] pt-5' href="">Forgot Password?</a> */}
 
                         <button type='submit' onClick={handleLogin} className='bg-[#4398d7] text-white text-base w-[471px] h-[43px] rounded-sm mt-8 hover:shadow-lg hover:shadow-[#4398d7]/40 transition-all duration-300' >LOGIN</button>
 

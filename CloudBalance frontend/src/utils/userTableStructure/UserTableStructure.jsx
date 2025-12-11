@@ -9,19 +9,13 @@ export const userTableStructure = [
 
   {
     header: "Roles",
-    colName: "roles",
-    render: (roles) => (
-      <div className="flex gap-2 flex-wrap">
-        {roles.map((role, i) => (
-          <span
-            key={i}
-            className="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-600"
-          >
-            {role}
-          </span>
-        ))}
-      </div>
-    ),
+    colName: "role",
+
+    render : (role) => (
+      <span className="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-600">
+        {role}
+      </span>
+    )
   },
 
   {

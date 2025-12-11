@@ -4,7 +4,7 @@ import { Login } from './pages/login/Login'
 import { MainDashboard } from './dashboard/maindashboard/MainDashboard'
 import { User } from './dashboard/user/User'
 import ProtectedRoute from './utils/protectedRoute/ProtectedRoute'
-import { AddUser } from './components/addUser/AddUser'
+import { AddUser } from './pages/addUser/AddUser'
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -23,7 +23,7 @@ function App() {
 
             <Route index element={<User />} />
             <Route path='adduser' element={<ProtectedRoute><AddUser/></ProtectedRoute>} />
-            {/* <Route path='user' element={<User />} /> */}
+            <Route path='user' element={<ProtectedRoute><User/></ProtectedRoute>} />
 
           </Route>
 
