@@ -37,7 +37,14 @@ export const AddUser = () => {
         }
 
         try {
-            const res = await axios.post('http://localhost:8080/user', userFormData,
+
+            const payload = {
+                ...userFormData,
+                lastLogin : new Date().toISOString(),
+                active: true,
+            }
+
+            const res = await axios.post('http://localhost:8080/user', payload,
                 {
                     headers: {
                         "Content-type": "application/json",
@@ -45,7 +52,7 @@ export const AddUser = () => {
                 }
             )
 
-            if (res.statas == 200 || res.status == 201) {
+            if (res.status == 200 || res.status == 201) {
                 alert("User created successfully")
                 setUserFormData({
                     firstName: '',
@@ -72,29 +79,29 @@ export const AddUser = () => {
                         <div>
                             <label htmlFor="">First Name</label>
                             <br />
-                            <input className="border border-[#DBDBDB] w-sm p-2 rounded-sm mt-1 placeholder:text-gray-400" type="text" onChange={handleInput} placeholder="Enter First name" required />
+                            <input className="border border-[#DBDBDB] w-sm p-2 rounded-sm mt-1 placeholder:text-gray-400" type="text" name="firstName" onChange={handleInput} placeholder="Enter First name" required />
                         </div>
 
                         <div>
                             <label htmlFor="">Last Name</label>
                             <br />
-                            <input className="border border-[#DBDBDB] w-sm p-2 rounded-sm mt-1 placeholder:text-gray-400" type="text" onChange={handleInput} placeholder="Enter Last name" required />
+                            <input className="border border-[#DBDBDB] w-sm p-2 rounded-sm mt-1 placeholder:text-gray-400" type="text" name="lastName" onChange={handleInput} placeholder="Enter Last name" required />
                         </div>
 
                         <div>
                             <label htmlFor="">E-mail ID</label>
                             <br />
-                            <input className="border border-[#DBDBDB] w-sm p-2 rounded-sm mt-1 placeholder:text-gray-400" type="text" onChange={handleInput} placeholder="Enter Email ID" required />
+                            <input className="border border-[#DBDBDB] w-sm p-2 rounded-sm mt-1 placeholder:text-gray-400" type="text" name="email" onChange={handleInput} placeholder="Enter Email ID" required />
                         </div>
 
                         <div>
                             <label htmlFor="">Select Roles</label>
                             <br />
-                            <select className="border border-[#DBDBDB] w-sm p-2 rounded-sm mt-1 text-gray-400" type="text" placeholder="Roles" onChange={handleInput} required >
-                                <option value='' disabled selected hidden className="text-gray-400">Select Roles</option>
-                                <option value='admin' className="text-black">Admin</option>
-                                <option value='customer' className="text-black">Customer</option>
-                                <option value='readOnly' className="text-black">Read Only</option>
+                            <select className="border border-[#DBDBDB] w-sm p-2 rounded-sm mt-1 text-gray-400" type="text" placeholder="Roles" name="role" value={userFormData.role} onChange={handleInput} required >
+                                <option value='' disabled hidden className="text-gray-400">Select Roles</option>
+                                <option value='Admin' className="text-black">Admin</option>
+                                <option value='Customer' className="text-black">Customer</option>
+                                <option value='Read-Only' className="text-black">Read Only</option>
                             </select>
                         </div>
                     </div>

@@ -24,11 +24,11 @@ export const Table = ({ columns, data }) => {
                     </tr>
                 </thead>
 
-                <div className="w-full bg-white h-0.5"></div>
+                {/* <div className="w-full bg-white h-0.5"></div> */}
 
                 <tbody>
                     {data.map((row, rowIndex) => (
-                        <tr key={rowIndex} className=" hover:bg-gray-50 odd:bg-gray-200">
+                        <tr key={rowIndex} className=" hover:bg-gray-50 odd:bg-gray-100">
                             {columns.map((col) => (
                                 <td key={col.colName} className="px-4 py-2">
 

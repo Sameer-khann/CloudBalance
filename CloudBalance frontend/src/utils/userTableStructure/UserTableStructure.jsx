@@ -2,6 +2,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Switch from "@mui/material/Switch";
 
+
+
 export const userTableStructure = [
   { header: "First Name", colName: "firstName" },
   { header: "Last Name", colName: "lastName" },
