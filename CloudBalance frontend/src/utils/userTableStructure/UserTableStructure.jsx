@@ -4,7 +4,7 @@ import Switch from "@mui/material/Switch";
 
 
 
-export const userTableStructure = [
+export const userTableStructure = (onEditClick, handleDeleteUser) => [
   { header: "First Name", colName: "firstName" },
   { header: "Last Name", colName: "lastName" },
   { header: "Email", colName: "email" },
@@ -42,7 +42,7 @@ export const userTableStructure = [
     header: "Edit",
     colName: "edit",
     render: (_, row) => (
-      <button onClick={() => console.log("Edit:", row)}>
+      <button onClick={() => onEditClick(row)}>
         <EditIcon className="text-blue-800 cursor-pointer" />
       </button>
     ),
@@ -52,7 +52,10 @@ export const userTableStructure = [
     header: "Delete",
     colName: "delete",
     render: (_, row) => (
-      <button onClick={() => console.log("DELETE:", row)}>
+      <button 
+      // onClick={() => console.log("DELETE:", row)}
+      onClick={() => handleDeleteUser(row)}
+      >
         <DeleteIcon className="text-blue-800 cursor-pointer" />
       </button>
     ),

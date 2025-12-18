@@ -2,33 +2,72 @@ import React, { useState } from 'react'
 
 import logo from '../../assets/cloudbalance.png'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 export const Login = () => {
 
-    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const [emptyName, setEmptyName] = useState(false)
+    const [emptyEmail, setEmptyEmail] = useState(false)
     const [emptyPassword, setEmptyPassword] = useState(false)
+
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
 
-    const handleLogin = () => {
-        if (name && password) {
-            localStorage.setItem("Islogin", "true");
-            navigate('/dashboard')
+    const handleLogin = async () => {
+
+        if (loading) return;
+
+        setLoading(true);
+
+        if (!email) setEmptyEmail(true);
+        if (!password) setEmptyPassword(true);
+
+        if (!email || !password) return;
+
+        const loginCredentials = {
+            email: email,
+            password: password
         }
-        else if(!name){
-            setEmptyName(true)
+
+        try {
+            const res = await axios.post("http://localhost:8080/login", loginCredentials, {
+                headers: { "Content-Type": "application/json" }
+            })
+
+            // if (res.status == 200) {
+                localStorage.setItem("Islogin", "true");
+                navigate('/dashboard')
+            // }
+            // else {
+            //     setEmptyName(true)
+            //     setEmptyPassword(true)
+            // }
+            setLoading(false);
         }
-        else if(!password){
-            setEmptyPassword(true)
+        catch (err) {
+            alert(err?.response?.data?.message || "Login Failed");
+            setLoading(false);
         }
-        else {
-            setEmptyName(true)
-            setEmptyPassword(true)
-        }
+
+
+        // if (name && password) {
+        //     localStorage.setItem("Islogin", "true");
+        //     navigate('/dashboard')
+        // }
+        // else if(!name){
+        //     setEmptyName(true)
+        // }
+        // else if(!password){
+        //     setEmptyPassword(true)
+        // }
+        // else {
+        //     setEmptyName(true)
+        //     setEmptyPassword(true)
+        // }
 
         // console.log("name : ", name);
         // console.log("Password : ", password);
@@ -49,11 +88,11 @@ export const Login = () => {
                         <img className='w-60 h-auto' src={logo} alt=" CloudBalance LOGO" />
 
                         <div className='pb-8'>
-                            <label className='text-left text-[14px] text-[#333]' htmlFor="username">Username</label>
+                            <label className='text-left text-[14px] text-[#333]' htmlFor="username">Email</label>
                             <br />
-                            <input onChange={(e) => setName(e.target.value)} className='border border-[#DBDBDB] w-[471px] h-[43px] mt-3.5 rounded-sm px-3 placeholder:text-[#DBDBDB]' id='username' type='text' placeholder='Username' required />
-                            {emptyName && 
-                            <p className="text-red-500 text-sm mt-1">This field is required</p>
+                            <input onChange={(e) => setEmail(e.target.value)} className='border border-[#DBDBDB] w-[471px] h-[43px] mt-3.5 rounded-sm px-3 placeholder:text-[#DBDBDB]' id='username' type='text' placeholder='Username' />
+                            {emptyEmail &&
+                                <p className="text-red-500 text-sm mt-1">This field is required</p>
                             }
                         </div>
 
@@ -61,10 +100,10 @@ export const Login = () => {
                         <div className=''>
                             <label className='text-left text-[14px] text-[#333]' htmlFor="password">Password</label>
                             <br />
-                            <input onChange={(e) => setPassword(e.target.value)} className='border border-[#DBDBDB] w-[471px] h-[43px] mt-3.5 rounded-sm px-3 placeholder:text-[#DBDBDB]' id='password' type='password' placeholder='Password' required />
+                            <input onChange={(e) => setPassword(e.target.value)} className='border border-[#DBDBDB] w-[471px] h-[43px] mt-3.5 rounded-sm px-3 placeholder:text-[#DBDBDB]' id='password' type='password' placeholder='Password' />
 
-                            {emptyPassword && 
-                            <p className="text-red-500 text-sm mt-1">This field is required</p>
+                            {emptyPassword &&
+                                <p className="text-red-500 text-sm mt-1">This field is required</p>
                             }
                         </div>
                         {/* <a className='text-right text-[#4398d7] font-medium text-xs w-[471px] pt-5' href="">Forgot Password?</a> */}

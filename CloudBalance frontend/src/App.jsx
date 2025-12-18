@@ -5,6 +5,7 @@ import { MainDashboard } from './dashboard/maindashboard/MainDashboard'
 import { User } from './dashboard/user/User'
 import ProtectedRoute from './utils/protectedRoute/ProtectedRoute'
 import { AddUser } from './pages/addUser/AddUser'
+import {EditUser} from './pages/editUser/EditUser'
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -23,6 +24,7 @@ function App() {
 
             <Route index element={<User />} />
             <Route path='adduser' element={<ProtectedRoute><AddUser/></ProtectedRoute>} />
+            <Route path='edituser' element={<ProtectedRoute><EditUser/></ProtectedRoute>}/>
             <Route path='user' element={<ProtectedRoute><User/></ProtectedRoute>} />
 
           </Route>

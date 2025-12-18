@@ -1,23 +1,39 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 
-export const AddUser = () => {
+export const AddUser = ({ buttonText, editData }) => {
+
+    // console.log("Editdata ID : ", editData.id);
 
     const [userFormData, setUserFormData] = useState({
         firstName: '',
         lastName: '',
         email: '',
-        role: ''
+        role: '',
+        userName: '',
+        password: '',
     });
 
-    const {setPageTitle} = useOutletContext();
+    const { setPageTitle } = useOutletContext();
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         setPageTitle('Add New User');
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+
+        if (editData) {
+            setUserFormData({
+                firstName: editData.firstName,
+                lastName: editData.lastName,
+                email: editData.email,
+                role: editData.role
+            })
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [editData]);
 
     const handleInput = (e) => {
         const { name, value } = e.target;
@@ -36,35 +52,81 @@ export const AddUser = () => {
             return;
         }
 
-        try {
+        if (editData) {
 
-            const payload = {
-                ...userFormData,
-                lastLogin : new Date().toISOString(),
-                active: true,
-            }
+            try {
 
-            const res = await axios.post('http://localhost:8080/user', payload,
-                {
-                    headers: {
-                        "Content-type": "application/json",
-                    }
+                const payload = {
+                    id: editData.id,
+                    ...userFormData,
+                    lastLogin: new Date().toISOString(),
+                    active: true,
                 }
-            )
 
-            if (res.status == 200 || res.status == 201) {
-                alert("User created successfully")
-                setUserFormData({
-                    firstName: '',
-                    lastName: '',
-                    email: '',
-                    role: ''
-                })
+                const res = await axios.put('http://localhost:8080/user', payload,
+                    {
+                        headers: {
+                            "Content-type": "application/json",
+                        }
+                    }
+                )
+
+                if (res.status == 200 || res.status == 201) {
+                    alert("User Updated successfully")
+                    setUserFormData({
+                        firstName: '',
+                        lastName: '',
+                        email: '',
+                        role: ''
+                    })
+                }
+
+                navigate('/dashboard/user');
             }
+            catch (err) {
+                console.log("Error : ", err?.response?.data?.message)
+                // alert("User is not updated.")
+                alert(err?.response?.data?.message)
+            }
+
         }
-        catch(err){
-            console.log("Error : ", err)
-            alert("User is not created.")
+
+        else {
+
+            try {
+
+                const payload = {
+                    ...userFormData,
+                    lastLogin: new Date().toISOString(),
+                    active: true,
+                }
+
+                const res = await axios.post('http://localhost:8080/user', payload,
+                    {
+                        headers: {
+                            "Content-type": "application/json",
+                        }
+                    }
+                )
+
+                if (res.status == 200 || res.status == 201) {
+                    alert("User created successfully")
+                    setUserFormData({
+                        firstName: '',
+                        lastName: '',
+                        email: '',
+                        role: '',
+                        userName: '',
+                        password: '',
+                    })
+                }
+                navigate('/dashboard/user');
+            }
+            catch (err) {
+                console.log("Error : ", err?.response?.data?.message || "Something went wrong")
+                // alert("User is not created.")
+                alert(err?.response?.data?.message)
+            }
         }
 
 
@@ -79,20 +141,21 @@ export const AddUser = () => {
                         <div>
                             <label htmlFor="">First Name</label>
                             <br />
-                            <input className="border border-[#DBDBDB] w-sm p-2 rounded-sm mt-1 placeholder:text-gray-400" type="text" name="firstName" onChange={handleInput} placeholder="Enter First name" required />
+                            <input className="border border-[#DBDBDB] w-sm p-2 rounded-sm mt-1 placeholder:text-gray-400" type="text" value={userFormData.firstName} name="firstName" onChange={handleInput} placeholder="Enter First name" required />
                         </div>
 
                         <div>
                             <label htmlFor="">Last Name</label>
                             <br />
-                            <input className="border border-[#DBDBDB] w-sm p-2 rounded-sm mt-1 placeholder:text-gray-400" type="text" name="lastName" onChange={handleInput} placeholder="Enter Last name" required />
+                            <input className="border border-[#DBDBDB] w-sm p-2 rounded-sm mt-1 placeholder:text-gray-400" type="text" value={userFormData.lastName} name="lastName" onChange={handleInput} placeholder="Enter Last name" required />
                         </div>
 
                         <div>
                             <label htmlFor="">E-mail ID</label>
                             <br />
-                            <input className="border border-[#DBDBDB] w-sm p-2 rounded-sm mt-1 placeholder:text-gray-400" type="text" name="email" onChange={handleInput} placeholder="Enter Email ID" required />
+                            <input className="border border-[#DBDBDB] w-sm p-2 rounded-sm mt-1 placeholder:text-gray-400" type="text" value={userFormData.email} name="email" onChange={handleInput} placeholder="Enter Email ID" required />
                         </div>
+
 
                         <div>
                             <label htmlFor="">Select Roles</label>
@@ -104,9 +167,25 @@ export const AddUser = () => {
                                 <option value='Read-Only' className="text-black">Read Only</option>
                             </select>
                         </div>
+
+                        {!editData && (<>
+                            <div>
+                                <label htmlFor="">Username</label>
+                                <br />
+                                <input className="border border-[#DBDBDB] w-sm p-2 rounded-sm mt-1 placeholder:text-gray-400" type="text" value={userFormData.userName} name="userName" onChange={handleInput} placeholder="Enter username" required />
+                            </div>
+
+                            <div>
+                                <label htmlFor="">Password</label>
+                                <br />
+                                <input className="border border-[#DBDBDB] w-sm p-2 rounded-sm mt-1 placeholder:text-gray-400" type="text" value={userFormData.password} name="password" onChange={handleInput} placeholder="Enter Password" required />
+                            </div>
+
+                        </>
+                        )}
                     </div>
                     <div>
-                        <button className="bg-blue-800 p-2 rounded-sm cursor-pointer text-white">Create User</button>
+                        <button className="bg-blue-800 p-2 rounded-sm cursor-pointer text-white">{buttonText ? buttonText : "Create User"}</button>
                     </div>
                 </div>
 

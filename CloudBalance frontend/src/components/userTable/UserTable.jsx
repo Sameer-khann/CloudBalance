@@ -10,13 +10,15 @@ export const UserTable = () => {
     
 
     const [users, setUser] = useState([]);
+    const { setPageTitle } = useOutletContext();
+    const navigate = useNavigate();
 
     useEffect(() => {
 
         const getAllUsers = async () => {
 
             try {
-                const res = await axios.get("http://localhost:8080/user/alluser");
+                const res = await axios.get("http://localhost:8080/user");
                 setUser(res.data);
             }
             catch (err) {
@@ -28,20 +30,46 @@ export const UserTable = () => {
 
     }, [])
 
-    const { setPageTitle } = useOutletContext();
-
-
     useEffect(() => {
         setPageTitle('Users ');
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const navigate = useNavigate();
 
     const addUser = () => {
         navigate('/dashboard/adduser')
     }
 
+    const handleEditUser = (row) => {
+
+        navigate("/dashboard/edituser", {
+            state: {user : row},
+        })
+
+    }
+
+    const handleDeleteUser = async (row) => {
+
+        // console.log("deleted row id : ", row.id);
+        
+        try{
+            const res = await axios.delete(`http://localhost:8080/user/${row.id}`);
+
+            if(res.status == 200){
+                alert("User Updated successfully");
+
+                setUser(prev => prev.filter(users => users.id != row.id));
+            }
+            else{
+                alert("User not deleted");
+            }
+        }
+        catch(err){
+            alert(err);
+        }
+    }
+
+    const columns = userTableStructure(handleEditUser, handleDeleteUser);
 
     return (
         <>
@@ -51,7 +79,7 @@ export const UserTable = () => {
                     <div><AddIcon /></div>
                     <p>Add new user</p>
                 </button>
-                <Table columns={userTableStructure} data={users} />
+                <Table columns={columns} data={users} />
             </div>
 
         </>);

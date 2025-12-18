@@ -7,6 +7,8 @@
 
 
 export const Table = ({ columns, data }) => {
+
+    // console.log(data);
     return (
         <div className="overflow-x-auto w-full bg-white shadow rounded-lg ">
             <table className="min-w-full border-collapse">
