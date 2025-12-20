@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import logo from '../../assets/cloudbalance.png'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { userData } from '../../redux/actions'
 
 export const Login = () => {
 
@@ -15,6 +17,8 @@ export const Login = () => {
     const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
+
+    const dispatch = useDispatch();
 
 
     const handleLogin = async () => {
@@ -40,6 +44,7 @@ export const Login = () => {
 
             // if (res.status == 200) {
                 localStorage.setItem("Islogin", "true");
+                dispatch(userData(res.data))
                 navigate('/dashboard')
             // }
             // else {

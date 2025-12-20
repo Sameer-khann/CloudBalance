@@ -1,5 +1,7 @@
 package com.samir.cloudbalance.controller;
 
+import com.samir.cloudbalance.dto.LoginRequestDto;
+import com.samir.cloudbalance.dto.LoginResponseDto;
 import com.samir.cloudbalance.model.UserEntity;
 import com.samir.cloudbalance.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +22,11 @@ public class AuthController {
 
 
     @PostMapping
-    public ResponseEntity<?> login(@RequestBody UserEntity userEntity) {
+    public ResponseEntity<?> login(@RequestBody LoginRequestDto request) {
 
-        System.out.println(userEntity);
-        return authService.login(userEntity);
+        System.out.println(request);
+        LoginResponseDto response = authService.login(request);
+        return ResponseEntity.ok(response);
     }
 
 }

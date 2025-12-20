@@ -30,13 +30,13 @@ export const userTableStructure = (onEditClick, handleDeleteUser) => [
     ),
   },
 
-  {
-    header: "Active",
-    colName: "active",
-    render: (value, row) => (
-      <Switch defaultChecked={value} onChange={() => console.log(row)} />
-    ),
-  },
+  // {
+  //   header: "Active",
+  //   colName: "active",
+  //   render: (value, row) => (
+  //     <Switch defaultChecked={value} onChange={() => console.log(row)} />
+  //   ),
+  // },
 
   {
     header: "Edit",

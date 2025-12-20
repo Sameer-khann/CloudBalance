@@ -11,6 +11,8 @@ export const Sidebar = () => {
 
     const isOpen = useSelector(state => state.sidebar.open)
 
+    // console.log("open redux : ", isOpen);
+
     return (
         <>
             {/* <div>This is Sidebar.</div> */}

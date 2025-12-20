@@ -6,7 +6,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { sidebarToggle } from '../../redux/actions';
 import { useNavigate } from 'react-router-dom';
 // import { toggleReducer } from '../../redux/reducer';
@@ -16,6 +16,10 @@ import { useNavigate } from 'react-router-dom';
 export const Header = () => {
 
     const navigate = useNavigate();
+    const currUser = useSelector(state => state.sidebar.user);
+    const dispatch = useDispatch();
+
+    console.log("currUser : ", currUser);
 
     const handleLogout = () => {
         localStorage.clear("Islogin");
@@ -23,7 +27,6 @@ export const Header = () => {
     }
 
 
-    const dispatch = useDispatch();
 
     return (
         <>
@@ -45,7 +48,7 @@ export const Header = () => {
                         <div className='flex items-center text-[#0741a7] ' ><PeopleAltOutlinedIcon/></div>
                         <div>
                             <div>Welcome</div>
-                            <div className='text-[#0741a7] font-medium text-lg'>Samir Khan <InfoOutlinedIcon/></div>
+                            <div className='text-[#0741a7] font-medium text-lg'>{currUser.firstName + ' ' + currUser.lastName} <InfoOutlinedIcon/></div>
                         </div>
                     </div>
                     <div className='w-0.5 h-10 bg-gray-200'></div>
