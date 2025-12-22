@@ -1,5 +1,7 @@
 package com.samir.cloudbalance.controller;
 
+import com.samir.cloudbalance.dto.UserRequestDto;
+import com.samir.cloudbalance.dto.UserResponseDto;
 import com.samir.cloudbalance.model.UserEntity;
 import com.samir.cloudbalance.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +17,19 @@ public class UserController {
     UserService UserService;
 
     @GetMapping
-    public List<UserEntity> getAllUser(){
+    public List<UserResponseDto> getAllUser(){
         return UserService.allUsers();
     }
 
     @PostMapping
-    public void addUser(@RequestBody UserEntity userEntity){
-        UserService.addUser(userEntity);
+    public void addUser(@RequestBody UserRequestDto userRequestDto){
+        UserService.addUser(userRequestDto);
     }
 
     @PutMapping
-    public void updateUser(@RequestBody UserEntity userEntity){
+    public void updateUser(@RequestBody UserRequestDto userRequestDto){
 //        System.out.println(user);
-        UserService.updateUser(userEntity);
+        UserService.updateUser(userRequestDto);
     }
 
     @DeleteMapping("/{id}")

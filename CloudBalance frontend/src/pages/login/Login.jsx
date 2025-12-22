@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import logo from '../../assets/cloudbalance.png'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import axios from '../../interceptor/AxiosRequestInterceptor'
 import { useDispatch } from 'react-redux'
 import { userData } from '../../redux/actions'
 
@@ -43,9 +43,10 @@ export const Login = () => {
             })
 
             // if (res.status == 200) {
-                localStorage.setItem("Islogin", "true");
-                dispatch(userData(res.data))
+                // localStorage.setItem("Islogin", "true");
+                localStorage.setItem("token", res.data.token);
                 navigate('/dashboard')
+                dispatch(userData(res.data))
             // }
             // else {
             //     setEmptyName(true)

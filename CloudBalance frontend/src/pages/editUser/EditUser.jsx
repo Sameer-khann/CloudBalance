@@ -2,6 +2,7 @@ import { useLocation, useOutletContext } from "react-router-dom"
 import { AddUser } from "../addUser/AddUser"
 import { useEffect } from "react";
 // import axios from "axios";
+// import axios from "../../interceptor/AxiosRequestInterceptor";
 
 
 export const EditUser = () => {

@@ -1,4 +1,6 @@
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../interceptor/AxiosRequestInterceptor"
+
 import { useEffect, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 

@@ -22,7 +22,7 @@ export const Header = () => {
     console.log("currUser : ", currUser);
 
     const handleLogout = () => {
-        localStorage.clear("Islogin");
+        localStorage.clear("token");
         navigate('/');
     }
 

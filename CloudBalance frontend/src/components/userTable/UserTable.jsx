@@ -4,7 +4,9 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 
 import AddIcon from '@mui/icons-material/Add';
 import { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
+
+import axios from "../../interceptor/AxiosRequestInterceptor"
 
 export const UserTable = () => {
     
@@ -13,10 +15,15 @@ export const UserTable = () => {
     const { setPageTitle } = useOutletContext();
     const navigate = useNavigate();
 
+    const token = localStorage.getItem("token");
+            console.log("token" , token);
+    
     useEffect(() => {
-
+        
         const getAllUsers = async () => {
 
+            
+            
             try {
                 const res = await axios.get("http://localhost:8080/user");
                 setUser(res.data);
