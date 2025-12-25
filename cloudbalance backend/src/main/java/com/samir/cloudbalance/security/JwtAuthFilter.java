@@ -16,6 +16,7 @@ import java.util.Collections;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
+//    OncePerRequestFilter for JWTAuthentication filter
 
     @Autowired
     public JwtUtil jwtUtil;
@@ -40,6 +41,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
                 UsernamePasswordAuthenticationToken auth =
 //                        new UsernamePasswordAuthenticationToken(email, null, null);
+//                        Arguments (username/email/principal, credentials, Authority) principal -> logged-in user
                         new UsernamePasswordAuthenticationToken(email, null, Collections.emptyList());
 
                 auth.setDetails(
