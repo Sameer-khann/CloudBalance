@@ -3,7 +3,9 @@ package com.samir.cloudbalance.services;
 import com.samir.cloudbalance.controller.AuthController;
 import com.samir.cloudbalance.dto.LoginRequestDto;
 import com.samir.cloudbalance.dto.LoginResponseDto;
+import com.samir.cloudbalance.model.BlacklistedTokenEntity;
 import com.samir.cloudbalance.model.UserEntity;
+import com.samir.cloudbalance.repository.BlacklistedTokenRepository;
 import com.samir.cloudbalance.repository.UserRepository;
 import com.samir.cloudbalance.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class AuthService {
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
+    public BlacklistedTokenRepository blacklistedTokenRepo;
+
+    @Autowired
     private JwtUtil jwtUtil;
 
     public LoginResponseDto login(LoginRequestDto loginRequest){
@@ -37,7 +42,7 @@ public class AuthService {
             throw new RuntimeException("Invalid password");
         }
 
-        String token = jwtUtil.generateToken(validUser.getEmail());
+        String token = jwtUtil.generateToken(validUser.getEmail(), validUser.getRole());
 
         return new LoginResponseDto(
             validUser.getId(),
@@ -47,5 +52,10 @@ public class AuthService {
             validUser.getRole(),
                 token
         );
+    }
+
+    public void logout(String token) {
+
+        blacklistedTokenRepo.save(new BlacklistedTokenEntity(token, jwtUtil.extractExpiry(token)));
     }
 }

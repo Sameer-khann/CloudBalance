@@ -21,10 +21,25 @@ export const Header = () => {
 
     console.log("currUser : ", currUser);
 
-    const handleLogout = () => {
-        localStorage.clear("token");
-        navigate('/');
-    }
+    // const handleLogout = () => {
+    //     localStorage.clear("token");
+    //     navigate('/');
+    // }
+
+    const handleLogout = async () => {
+        const token = localStorage.getItem("token");
+
+        await fetch("http://localhost:8080/logout", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        localStorage.removeItem("token");
+        navigate("/");
+    };
+
 
 
 
@@ -39,21 +54,21 @@ export const Header = () => {
                         <div className='font-medium text-xs' >Module</div>
                         <div className='flex flex-row h-8 '>
                             <div className='font-normal text-base text-[#5c5b5b]'>Lens</div>
-                            <div className='font-normal text-xs'><ArrowDropDownIcon/></div>
+                            <div className='font-normal text-xs'><ArrowDropDownIcon /></div>
                         </div>
                     </div>
                 </div>
                 <div className='flex flex-row gap-2 items-center'>
                     <div className='flex flex-row gap-4'>
-                        <div className='flex items-center text-[#0741a7] ' ><PeopleAltOutlinedIcon/></div>
+                        <div className='flex items-center text-[#0741a7] ' ><PeopleAltOutlinedIcon /></div>
                         <div>
                             <div>Welcome</div>
-                            <div className='text-[#0741a7] font-medium text-lg'>{currUser.firstName + ' ' + currUser.lastName} <InfoOutlinedIcon/></div>
+                            <div className='text-[#0741a7] font-medium text-lg'>{currUser.firstName + ' ' + currUser.lastName} <InfoOutlinedIcon /></div>
                         </div>
                     </div>
                     <div className='w-0.5 h-10 bg-gray-200'></div>
                     <div className='flex flex-row border border-[#0741a7] rounded-sm p-1'>
-                        <div className='text-[#0741a7]'><LogoutOutlinedIcon/></div>
+                        <div className='text-[#0741a7]'><LogoutOutlinedIcon /></div>
                         <div className='text-[#0741a7] cursor-pointer ' onClick={handleLogout}>Logout</div>
                     </div>
                 </div>
