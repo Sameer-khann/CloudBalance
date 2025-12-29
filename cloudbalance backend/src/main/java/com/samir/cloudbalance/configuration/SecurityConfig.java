@@ -33,11 +33,11 @@ public class SecurityConfig {
                 cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) //explore other options here than STATELESS
                 )
                 .authorizeHttpRequests(auth -> auth
 //                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/login", "logout").permitAll()
+                        .requestMatchers("/login", "/logout").permitAll()
 //                                .requestMatchers("/adduser", "/edituser").hasRole("Admin")
 //                                .requestMatchers("/edituser").hasRole("Admin")
                         .anyRequest().authenticated()
@@ -62,17 +62,18 @@ public class SecurityConfig {
         config.setAllowedOrigins(List.of("http://localhost:5173"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true);
+        config.setAllowCredentials(true);// what is the use of this true here ? Or what does this line mean at all ?
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
+        source.registerCorsConfiguration("/**", config);//this entire function too?
 
         return source;
     }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
+
         return new BCryptPasswordEncoder();
     }
 }

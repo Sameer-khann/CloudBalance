@@ -37,9 +37,11 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-jdbc-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-security' //Authentication, Authorization, SecurityFilter(Everything Inside it)
     testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    //implementation 'org.springframework.boot:spring-boot-starter-session-jdbc' (only requred for session based auth)(StateFul) Enable persistent session
 
 
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'

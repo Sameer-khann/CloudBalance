@@ -21,13 +21,15 @@ public class JwtUtil {
     private String SECRET_KEY;
 
     @Value("${jwt.expiration}")
-    private String EXP_TIME;
+    private long EXP_TIME;
 
     private Key getSigningKey(){
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 
     public String generateToken(String email, String role){
+
+        System.out.println("JWT exp time : " + EXP_TIME);
 
         return Jwts.builder()
                 .setSubject(email)
@@ -36,7 +38,9 @@ public class JwtUtil {
                 .setExpiration(new Date(System.currentTimeMillis() + EXP_TIME))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
+
     }
+
     public String extractEmail(String token){
 
         return Jwts.parserBuilder()
