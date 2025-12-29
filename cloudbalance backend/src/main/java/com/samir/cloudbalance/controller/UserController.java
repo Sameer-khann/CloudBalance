@@ -17,6 +17,8 @@ public class UserController {
     @Autowired
     UserService UserService;
 
+//    @PreAuthorize("hasAnyRole('Admin','Customer')")
+//    @PreAuthorize("isAuthenticated()")
     @GetMapping
     public List<UserResponseDto> getAllUser(){
         return UserService.allUsers();
