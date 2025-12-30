@@ -19,6 +19,7 @@ public class UserController {
 
 //    @PreAuthorize("hasAnyRole('Admin','Customer')")
 //    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAnyRole('Admin','ReadOnly')")
     @GetMapping
     public List<UserResponseDto> getAllUser(){
         return UserService.allUsers();

@@ -40,6 +40,7 @@ public class SecurityConfig {
                         .requestMatchers("/login", "/logout").permitAll()
 //                                .requestMatchers("/adduser", "/edituser").hasRole("Admin")
 //                                .requestMatchers("/edituser").hasRole("Admin")
+                                .requestMatchers("/account/**", "/assign").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter,

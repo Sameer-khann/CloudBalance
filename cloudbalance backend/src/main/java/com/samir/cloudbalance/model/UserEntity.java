@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
+@ToString(exclude = "assignedAccounts")
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,6 +33,14 @@ public class UserEntity implements UserDetails {
     private String password;
     private String lastLogin;
     private Boolean active;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_accounts",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "account_id")
+    )
+    private List<AccountEntity> assignedAccounts;
 
 //    Override methods starts form here
 
