@@ -43,7 +43,7 @@ public class AuthService {
             throw new RuntimeException("Invalid password");
         }
 
-        String token = jwtUtil.generateToken(validUser.getEmail(), validUser.getRole());
+        String token = jwtUtil.generateToken(validUser.getEmail(), validUser.getRole().name());
 
         return new LoginResponseDto(
             validUser.getId(),

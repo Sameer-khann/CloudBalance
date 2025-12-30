@@ -7,6 +7,7 @@ import com.samir.cloudbalance.model.UserEntity;
 import com.samir.cloudbalance.repository.AccountRepository;
 import com.samir.cloudbalance.repository.UserRepository;
 import org.jspecify.annotations.Nullable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -69,6 +70,21 @@ public class AccountService {
             }
         }
         userRepo.save(user);
+    }
+
+    public List<AccountInfoDto> getAccountsForCurrentUser(Authentication auth){
+
+        UserEntity user = (UserEntity) auth.getPrincipal();
+
+        return user.getAssignedAccounts().stream().map(
+                account -> {
+                    AccountInfoDto dto = new AccountInfoDto();
+                    dto.setId(account.getId());
+                    dto.setName(account.getAccountName());
+                    dto.setArnNumber(account.getArnNumber());
+                    return dto;
+                }
+        ).toList();
     }
 
 }

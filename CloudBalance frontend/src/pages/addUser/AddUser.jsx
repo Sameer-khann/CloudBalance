@@ -1,5 +1,7 @@
 // import axios from "axios";
 import axios from "../../interceptor/AxiosRequestInterceptor"
+import { AccountAssignment } from "../../components/account/AccountAssignment";
+
 
 import { useEffect, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
@@ -17,6 +19,8 @@ export const AddUser = ({ buttonText, editData }) => {
         userName: '',
         password: '',
     });
+    const [assignedAccounts, setAssignedAccounts] = useState([]);
+
 
     const { setPageTitle } = useOutletContext();
 
@@ -32,10 +36,21 @@ export const AddUser = ({ buttonText, editData }) => {
                 email: editData.email,
                 role: editData.role
             })
+            
+            if (editData?.role === "Customer") {
+                setAssignedAccounts(editData.assignedAccounts || []);
+            }
         }
+
+
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [editData]);
+
+    //     useEffect(() => {
+
+    // }, [editData]);
+
 
     const handleInput = (e) => {
         const { name, value } = e.target;
@@ -75,6 +90,15 @@ export const AddUser = ({ buttonText, editData }) => {
 
                 if (res.status == 200 || res.status == 201) {
                     alert("User Updated successfully")
+
+                    if (userFormData.role === "Customer") {
+                        await axios.post("http://localhost:8080/assign", {
+                            userId: editData.id,
+                            accountsIds: assignedAccounts.map(acc => acc.id)
+                        });
+                    }
+
+
                     setUserFormData({
                         firstName: '',
                         lastName: '',
@@ -113,6 +137,14 @@ export const AddUser = ({ buttonText, editData }) => {
 
                 if (res.status == 200 || res.status == 201) {
                     alert("User created successfully")
+
+                    if (userFormData.role === "Customer" && assignedAccounts.length > 0) {
+                        await axios.post("http://localhost:8080/assign", {
+                            userId: res.data.id,
+                            accountsIds: assignedAccounts.map(acc => acc.id)
+                        });
+                    }
+
                     setUserFormData({
                         firstName: '',
                         lastName: '',
@@ -121,6 +153,8 @@ export const AddUser = ({ buttonText, editData }) => {
                         userName: '',
                         password: '',
                     })
+
+
                 }
                 navigate('/dashboard/user');
             }
@@ -169,6 +203,14 @@ export const AddUser = ({ buttonText, editData }) => {
                                 <option value='Read-Only' className="text-black">Read Only</option>
                             </select>
                         </div>
+
+                        {userFormData.role === "Customer" && (
+                            <AccountAssignment
+                                selectedAccounts={assignedAccounts}
+                                setSelectedAccounts={setAssignedAccounts}
+                            />
+                        )}
+
 
                         {!editData && (<>
                             <div>
