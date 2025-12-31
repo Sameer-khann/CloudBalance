@@ -16,7 +16,7 @@ export const AddUser = ({ buttonText, editData }) => {
         lastName: '',
         email: '',
         role: '',
-        userName: '',
+        // userName: '',
         password: '',
     });
     const [assignedAccounts, setAssignedAccounts] = useState([]);
@@ -36,7 +36,7 @@ export const AddUser = ({ buttonText, editData }) => {
                 email: editData.email,
                 role: editData.role
             })
-            
+
             if (editData?.role === "Customer") {
                 setAssignedAccounts(editData.assignedAccounts || []);
             }
@@ -78,6 +78,7 @@ export const AddUser = ({ buttonText, editData }) => {
                     ...userFormData,
                     lastLogin: new Date().toISOString(),
                     active: true,
+                    assignedAccountIds : userFormData.role == "Customer" ? assignedAccounts.map(account => account.id) : []
                 }
 
                 const res = await axios.put('http://localhost:8080/user', payload,
@@ -91,12 +92,12 @@ export const AddUser = ({ buttonText, editData }) => {
                 if (res.status == 200 || res.status == 201) {
                     alert("User Updated successfully")
 
-                    if (userFormData.role === "Customer") {
-                        await axios.post("http://localhost:8080/assign", {
-                            userId: editData.id,
-                            accountsIds: assignedAccounts.map(acc => acc.id)
-                        });
-                    }
+                    // if (userFormData.role === "Customer") {
+                    //     await axios.post("http://localhost:8080/assign", {
+                    //         userId: editData.id,
+                    //         accountsIds: assignedAccounts.map(acc => acc.id)
+                    //     });
+                    // }
 
 
                     setUserFormData({
@@ -125,6 +126,7 @@ export const AddUser = ({ buttonText, editData }) => {
                     ...userFormData,
                     lastLogin: new Date().toISOString(),
                     active: true,
+                    assignedAccountIds : userFormData.role == "Customer" ? assignedAccounts.map(account => account.id) : []
                 }
 
                 const res = await axios.post('http://localhost:8080/user', payload,
@@ -138,24 +140,32 @@ export const AddUser = ({ buttonText, editData }) => {
                 if (res.status == 200 || res.status == 201) {
                     alert("User created successfully")
 
-                    if (userFormData.role === "Customer" && assignedAccounts.length > 0) {
-                        await axios.post("http://localhost:8080/assign", {
-                            userId: res.data.id,
-                            accountsIds: assignedAccounts.map(acc => acc.id)
-                        });
-                    }
+                    // if (userFormData.role === "Customer" && assignedAccounts.length > 0) {
+                    //     await axios.post("http://localhost:8080/assign", {
+                    //         userId: res.data.id,
+                    //         accountsIds: assignedAccounts.map(acc => acc.id)
+                    //     }, {
+                    //         headers: {
+                    //             "Content-type": "application/json",
+                    //         }
+                    //     });
+                    //     alert("Accounts are assigning")
+                    // }
 
                     setUserFormData({
                         firstName: '',
                         lastName: '',
                         email: '',
                         role: '',
-                        userName: '',
+                        // userName: '',
                         password: '',
                     })
 
 
                 }
+                // else{
+                //     alert("200 is not getting")
+                // }
                 navigate('/dashboard/user');
             }
             catch (err) {
@@ -204,20 +214,10 @@ export const AddUser = ({ buttonText, editData }) => {
                             </select>
                         </div>
 
-                        {userFormData.role === "Customer" && (
-                            <AccountAssignment
-                                selectedAccounts={assignedAccounts}
-                                setSelectedAccounts={setAssignedAccounts}
-                            />
-                        )}
+
 
 
                         {!editData && (<>
-                            <div>
-                                <label htmlFor="">Username</label>
-                                <br />
-                                <input className="border border-[#DBDBDB] w-sm p-2 rounded-sm mt-1 placeholder:text-gray-400" type="text" value={userFormData.userName} name="userName" onChange={handleInput} placeholder="Enter username" required />
-                            </div>
 
                             <div>
                                 <label htmlFor="">Password</label>
@@ -226,6 +226,13 @@ export const AddUser = ({ buttonText, editData }) => {
                             </div>
 
                         </>
+                        )}
+
+                        {userFormData.role === "Customer" && (
+                            <AccountAssignment
+                                selectedAccounts={assignedAccounts}
+                                setSelectedAccounts={setAssignedAccounts}
+                            />
                         )}
                     </div>
                     <div>

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class JwtUtil {
@@ -33,7 +34,8 @@ public class JwtUtil {
 
         return Jwts.builder()
                 .setSubject(email)
-                .claim("role", role)
+//                .claim("role", role)
+                .claim("authorities", List.of("ROLE_" + role))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXP_TIME))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)

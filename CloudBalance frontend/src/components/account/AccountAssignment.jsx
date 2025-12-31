@@ -52,56 +52,62 @@ export const AccountAssignment = ({ selectedAccounts, setSelectedAccounts }) => 
     };
 
     return (
-        <div className="grid grid-cols-3 gap-6 mt-6">
-
-            {/* Available */}
-            <div className="bg-white p-4 rounded">
-                <h3 className="font-semibold mb-2">
+        <div className="grid grid-cols-3 gap-6 mt-6 border" >
+            <div className="flex items-center  flex-col">
+                <h3 className="font-semibold mb-2 sticky top-0 bg-white z-10 pt-2">
                     Available Accounts ({availableAccounts.length})
                 </h3>
 
-                {availableAccounts.map(acc => (
-                    <div
-                        key={acc.id}
-                        className="flex justify-between items-center p-2 border mb-2 cursor-pointer"
-                    >
-                        <span>{acc.name}</span>
-                        <button
-                            className="text-blue-600"
-                            onClick={() => assignAccount(acc)}
+                <div className="bg-white p-4 rounded max-h-80 overflow-y-auto">
+
+                    {availableAccounts.map(acc => (
+                        <div
+                            key={acc.id}
+                            className="flex justify-between items-center p-2 border mb-2 cursor-pointer gap-3"
                         >
-                            →
-                        </button>
-                    </div>
-                ))}
+                            <span>{acc.name}</span>
+                            <button
+                                className="text-blue-600"
+                                onClick={() => assignAccount(acc)}
+                            >
+                                →
+                            </button>
+                        </div>
+                    ))}
+                </div>
             </div>
+
 
             {/* Controls */}
             <div className="flex items-center justify-center">
                 <span className="text-gray-400">Assign / Unassign</span>
             </div>
 
-            {/* Assigned */}
-            <div className="bg-white p-4 rounded">
-                <h3 className="font-semibold mb-2">
+            <div className="flex items-center flex-col">
+                <h3 className="font-semibold mb-2 sticky top-0 bg-white z-10 pt-2">
                     Assigned Accounts ({selectedAccounts.length})
                 </h3>
 
-                {selectedAccounts.map(acc => (
-                    <div
-                        key={acc.id}
-                        className="flex justify-between items-center p-2 border mb-2 cursor-pointer"
-                    >
-                        <button
-                            className="text-red-600"
-                            onClick={() => unAssignAccount(acc)}
+                <div className="bg-white p-4 rounded max-h-80 overflow-y-auto">
+
+                    {selectedAccounts.map(acc => (
+                        <div
+                            key={acc.id}
+                            className="flex justify-between items-center p-2 border mb-2 cursor-pointer gap-3"
                         >
-                            ←
-                        </button>
-                        <span>{acc.name}</span>
-                    </div>
-                ))}
+                            <button
+                                className="text-red-600"
+                                onClick={() => unAssignAccount(acc)}
+                            >
+                                ←
+                            </button>
+                            <span>{acc.name}</span>
+                        </div>
+                    ))}
+                </div>
+
             </div>
+
 
         </div>
     );

@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class UserEntity implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "account_id")
     )
-    private List<AccountEntity> assignedAccounts;
+    private List<AccountEntity> assignedAccounts = new ArrayList<>();
 
 //    Override methods starts form here
 

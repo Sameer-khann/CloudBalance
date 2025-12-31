@@ -34,15 +34,15 @@ public class AccountController {
 
     @PreAuthorize("hasAnyRole('Admin', 'ReadOnly')")
     @GetMapping("/account")
-    public List<AccountInfoDto> getAccounts(){
-        return accountService.getAllAccounts();
+    public ResponseEntity<List<AccountInfoDto>> getAccounts(){
+        return ResponseEntity.ok(accountService.getAllAccounts());
     }
 
-    @PreAuthorize("hasRole('Admin')")
-    @PostMapping("/assign")
-    public void assignAccountsToUser(@RequestBody AssignAccountsDto assignAccountsDto){
-        accountService.assignAccountsToUser(assignAccountsDto);
-    }
+//    @PreAuthorize("hasRole('Admin')")
+//    @PostMapping("/assign")
+//    public void assignAccountsToUser(@RequestBody AssignAccountsDto assignAccountsDto){
+//        accountService.assignAccountsToUser(assignAccountsDto);
+//    }
 
 
     @PreAuthorize("hasRole('Customer')")
