@@ -30,6 +30,7 @@ export const AddUser = ({ buttonText, editData }) => {
         setPageTitle('Add New User');
 
         if (editData) {
+            // console.log("EditData: ", editData)
             setUserFormData({
                 firstName: editData.firstName,
                 lastName: editData.lastName,
@@ -37,9 +38,11 @@ export const AddUser = ({ buttonText, editData }) => {
                 role: editData.role
             })
 
-            if (editData?.role === "Customer") {
+            // console.log("editData.assignedAccounts: ", editData.assignedAccounts)
+
+            // if (editData?.role === "Customer") {
                 setAssignedAccounts(editData.assignedAccounts || []);
-            }
+            // }
         }
 
 

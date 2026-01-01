@@ -38,7 +38,8 @@ public class UserService {
                 user.getEmail(),
                 user.getRole(),
                 user.getLastLogin(),
-                user.getActive()
+                user.getActive(),
+                user.getAssignedAccounts()
         );
     }
 

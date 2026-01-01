@@ -35,7 +35,7 @@ public class AccountService {
 
         AccountEntity accountEntity = new AccountEntity();
 
-        accountEntity.setAccountName(accountInfoDto.getName());
+        accountEntity.setAccountName(accountInfoDto.getAccountName());
         accountEntity.setArnNumber(accountInfoDto.getArnNumber());
 
         System.out.println(accountEntity);
@@ -49,7 +49,7 @@ public class AccountService {
                 .map(account -> {
                     AccountInfoDto dto = new AccountInfoDto();
                     dto.setId(account.getId());
-                    dto.setName(account.getAccountName());
+                    dto.setAccountName(account.getAccountName());
                     dto.setArnNumber(account.getArnNumber());
                     return dto;
                 })
@@ -80,7 +80,7 @@ public class AccountService {
                 account -> {
                     AccountInfoDto dto = new AccountInfoDto();
                     dto.setId(account.getId());
-                    dto.setName(account.getAccountName());
+                    dto.setAccountName(account.getAccountName());
                     dto.setArnNumber(account.getArnNumber());
                     return dto;
                 }

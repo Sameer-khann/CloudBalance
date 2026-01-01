@@ -39,6 +39,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException{
 
+//        if (request.getServletPath().equals("/logout")) { //Logout should work even if token is expiring
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
+
         String header = request.getHeader("Authorization");
 
 //                                           with space Otherwise BearerXYZ → passes

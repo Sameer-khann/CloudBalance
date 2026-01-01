@@ -9,6 +9,7 @@ import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { useDispatch, useSelector } from 'react-redux';
 import { sidebarToggle } from '../../redux/actions';
 import { useNavigate } from 'react-router-dom';
+import axios from '../../interceptor/AxiosRequestInterceptor';
 // import { toggleReducer } from '../../redux/reducer';
 
 
@@ -26,19 +27,33 @@ export const Header = () => {
     //     navigate('/');
     // }
 
-    const handleLogout = async () => {
-        const token = localStorage.getItem("token");
+    // const handleLogout = async () => {
+    //     const token = localStorage.getItem("token");
 
-        await fetch("http://localhost:8080/logout", {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        });
+    //     await fetch("http://localhost:8080/logout", {
+    //         method: "POST",
+    //         headers: {
+    //             "Authorization": `Bearer ${token}`,
+    //             "Content-Type": "application/json"
+    //         }
+    //     });
+
+    //     localStorage.removeItem("token");
+    //     navigate("/");
+    // };
+
+    const handleLogout = async () => {
+        try {
+            await axios.post("/api/logout");
+        } catch (e) {
+            console.log("Logout error ignored", e);
+        }
 
         localStorage.removeItem("token");
         navigate("/");
     };
+
+
 
 
 

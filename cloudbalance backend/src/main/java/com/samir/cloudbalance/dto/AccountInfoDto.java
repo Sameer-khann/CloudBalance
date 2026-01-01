@@ -6,6 +6,6 @@ import lombok.Data;
 public class AccountInfoDto {
 
    private long id;
-   private String name;
+   private String accountName;
    private String arnNumber;
 }

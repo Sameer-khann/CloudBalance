@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,9 +36,15 @@ public class SecurityConfig {
                 .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) //explore other options here than STATELESS
                 )
+
+                .formLogin(form -> form.disable())
+                .httpBasic(basic -> basic.disable())
+
+                .logout(logout -> logout.disable())
+
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/login", "/logout").permitAll()
+                                .requestMatchers("/login", "/api/logout").permitAll()
 //                                .requestMatchers("/adduser", "/edituser").hasRole("Admin")
 //                                .requestMatchers("/edituser").hasRole("Admin")
 //                                .requestMatchers("/account/**", "/assign").authenticated()
@@ -55,6 +62,13 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring()
+                .requestMatchers("/logout");
+    }
+
 
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource(){

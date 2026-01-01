@@ -5,15 +5,25 @@ export const AccountAssignment = ({ selectedAccounts, setSelectedAccounts }) => 
 
     const [availableAccounts, setAvailableAccounts] = useState([]);
 
+    console.log("selectedAccounts: ", selectedAccounts);
+
     useEffect(() => {
         let isMounted = true;
 
         const fetchAccounts = async () => {
             try {
                 const res = await axios.get("/account");
-                if (isMounted) {
-                    setAvailableAccounts(res.data);
-                }
+
+                if (!isMounted) return;
+
+                // remove already assigned accounts
+                const selectedIds = new Set(selectedAccounts.map(acc => acc.id));
+
+                const unassigned = res.data.filter(
+                    acc => !selectedIds.has(acc.id)
+                );
+
+                setAvailableAccounts(unassigned);
             } catch (err) {
                 console.error("Failed to load accounts : ", err);
             }
@@ -24,7 +34,30 @@ export const AccountAssignment = ({ selectedAccounts, setSelectedAccounts }) => 
         return () => {
             isMounted = false;
         };
-    }, []);
+    }, [selectedAccounts]);
+
+
+    // useEffect(() => {
+    //     let isMounted = true;
+
+    //     const fetchAccounts = async () => {
+    //         try {
+    //             const res = await axios.get("/account");
+    //             if (isMounted) {
+    //                 setAvailableAccounts(res.data);
+    //                 console.log("Response Data : ", res.data)
+    //             }
+    //         } catch (err) {
+    //             console.error("Failed to load accounts : ", err);
+    //         }
+    //     };
+
+    //     fetchAccounts();
+
+    //     return () => {
+    //         isMounted = false;
+    //     };
+    // }, []);
 
 
 
@@ -65,7 +98,7 @@ export const AccountAssignment = ({ selectedAccounts, setSelectedAccounts }) => 
                             key={acc.id}
                             className="flex justify-between items-center p-2 border mb-2 cursor-pointer gap-3"
                         >
-                            <span>{acc.name}</span>
+                            <span>{acc.accountName}</span>
                             <button
                                 className="text-blue-600"
                                 onClick={() => assignAccount(acc)}
@@ -78,7 +111,6 @@ export const AccountAssignment = ({ selectedAccounts, setSelectedAccounts }) => 
             </div>
 
 
-            {/* Controls */}
             <div className="flex items-center justify-center">
                 <span className="text-gray-400">Assign / Unassign</span>
             </div>
@@ -101,7 +133,7 @@ export const AccountAssignment = ({ selectedAccounts, setSelectedAccounts }) => 
                             >
                                 ←
                             </button>
-                            <span>{acc.name}</span>
+                            <span>{acc.accountName}</span>
                         </div>
                     ))}
                 </div>
