@@ -86,6 +86,10 @@ public class UserService {
             throw new UserAlreadyExistsException("Email already in use by another user");
         }
 
+//        List<UserEntity> users = userRepo.findByEmailOrderByIdDesc(userRequestDto.getEmail());
+
+        System.out.println("this is ");
+
         existingUserEntity.setFirstName(userRequestDto.getFirstName());
         existingUserEntity.setLastName(userRequestDto.getLastName());
         existingUserEntity.setEmail(userRequestDto.getEmail());
@@ -116,7 +120,11 @@ public class UserService {
         UserEntity userEntity = userRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+
+
         userRepo.delete(userEntity);
     }
+
+
 }
 

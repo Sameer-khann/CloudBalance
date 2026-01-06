@@ -16,6 +16,7 @@ import java.util.List;
 
 @Data
 @ToString(exclude = "assignedAccounts")
+//???
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

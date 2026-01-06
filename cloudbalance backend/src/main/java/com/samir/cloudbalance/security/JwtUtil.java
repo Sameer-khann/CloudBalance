@@ -61,6 +61,7 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody()
                 .get("role", String.class);
+//        .get("authorities", List.class);
     }
 
     public boolean validateToken(String token){

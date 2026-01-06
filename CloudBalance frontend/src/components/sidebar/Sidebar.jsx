@@ -29,12 +29,22 @@ export const Sidebar = () => {
                         </NavLink>
                     </li>
                     <li className='flex flex-row gap-4 hover:bg-[#d1edff] mr-4 p-2 rounded-lg'>
+                        <NavLink to='/dashboard/onboading'  className={({isActive}) => `flex flex-row gap-4 w-full p-2 rounded-lg ${isActive? 'bg-[#d1edff]' : ''}`}>
                         <div><ScreenSearchDesktopOutlinedIcon /></div>
-                        <div>Dashboard Control Grid</div>
+                        <div>Onboarding</div>
+                         </NavLink>
                     </li>
                     <li className='flex flex-row gap-4 hover:bg-[#d1edff] mr-4 p-2 rounded-lg'>
+                        <NavLink to='/dashboard/costexplorer'  className={({isActive}) => `flex flex-row gap-4 w-full p-2 rounded-lg ${isActive? 'bg-[#d1edff]' : ''}`}>
                         <div><MemoryOutlinedIcon /></div>
-                        <div>Module Control Grid</div>
+                        <div>Cost Explorer</div>
+                        </NavLink>
+                    </li>
+                    <li className='flex flex-row gap-4 hover:bg-[#d1edff] mr-4 p-2 rounded-lg'>
+                        <NavLink to='/'  className={({isActive}) => `flex flex-row gap-4 w-full p-2 rounded-lg ${isActive? 'bg-[#d1edff]' : ''}`}>
+                        <div><MemoryOutlinedIcon /></div>
+                        <div>Accounts</div>
+                        </NavLink>
                     </li>
                 </ul>
 

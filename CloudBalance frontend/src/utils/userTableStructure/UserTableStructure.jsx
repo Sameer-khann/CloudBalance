@@ -21,7 +21,7 @@ export const userTableStructure = (onEditClick, handleDeleteUser) => [
   },
 
   {
-    header: "Last Login",
+    header: "Creation Time",
     colName: "lastLogin",
     render: (value) => (
       <span className="text-gray-700">

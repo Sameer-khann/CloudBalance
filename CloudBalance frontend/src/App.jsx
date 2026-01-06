@@ -5,7 +5,9 @@ import { MainDashboard } from './dashboard/maindashboard/MainDashboard'
 import { User } from './dashboard/user/User'
 import ProtectedRoute from './utils/protectedRoute/ProtectedRoute'
 import { AddUser } from './pages/addUser/AddUser'
-import {EditUser} from './pages/editUser/EditUser'
+import { EditUser } from './pages/editUser/EditUser'
+import { Onboarding } from './dashboard/onboarding/Onboarding'
+import { CostExplorer } from './dashboard/costExplorer/CostExplorer'
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -23,11 +25,14 @@ function App() {
           }>
 
             <Route index element={<User />} />
-            <Route path='adduser' element={<ProtectedRoute><AddUser/></ProtectedRoute>} />
-            <Route path='edituser' element={<ProtectedRoute><EditUser/></ProtectedRoute>}/>
-            <Route path='user' element={<ProtectedRoute><User/></ProtectedRoute>} />
+            <Route path='adduser' element={<ProtectedRoute><AddUser /></ProtectedRoute>} />
+            <Route path='edituser' element={<ProtectedRoute><EditUser /></ProtectedRoute>} />
+            <Route path='user' element={<ProtectedRoute><User /></ProtectedRoute>} />
+            <Route path='onboading' element={<Onboarding />} />
+            <Route path='costexplorer'element={<CostExplorer/>} />
 
           </Route>
+
 
         </Routes>
       </Router>
