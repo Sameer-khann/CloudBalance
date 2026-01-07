@@ -6,7 +6,7 @@ import { User } from './dashboard/user/User'
 import ProtectedRoute from './utils/protectedRoute/ProtectedRoute'
 import { AddUser } from './pages/addUser/AddUser'
 import { EditUser } from './pages/editUser/EditUser'
-import { Onboarding } from './dashboard/onboarding/Onboarding'
+import Onboarding from './dashboard/onboarding/Onboarding'
 import { CostExplorer } from './dashboard/costExplorer/CostExplorer'
 
 function App() {
