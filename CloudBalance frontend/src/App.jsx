@@ -8,12 +8,15 @@ import { AddUser } from './pages/addUser/AddUser'
 import { EditUser } from './pages/editUser/EditUser'
 import Onboarding from './dashboard/onboarding/Onboarding'
 import { CostExplorer } from './dashboard/costExplorer/CostExplorer'
+import { Toaster } from 'sonner'
 
 function App() {
   // const [count, setCount] = useState(0)
 
   return (
     <>
+
+    <Toaster richColors position="top-right" />
       <Router>
         <Routes>
           <Route path='/' element={<Login />} />
