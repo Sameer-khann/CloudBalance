@@ -45,12 +45,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .requestMatchers("/login", "/api/logout").permitAll()
+                                .requestMatchers("/api/cost-explorer/**").permitAll()
 //                                .requestMatchers("/adduser", "/edituser").hasRole("Admin")
 //                                .requestMatchers("/edituser").hasRole("Admin")
 //                                .requestMatchers("/account/**", "/assign").authenticated()
                         .anyRequest().authenticated()
-                )
-                .addFilterBefore(jwtAuthFilter,
+                );
+
+                http.addFilterBefore(jwtAuthFilter,
                         UsernamePasswordAuthenticationFilter.class);
 
 //        http

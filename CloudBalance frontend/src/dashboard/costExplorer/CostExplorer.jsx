@@ -5,6 +5,9 @@ import Column2D from "fusioncharts/fusioncharts.charts";
 import FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
 import { useOutletContext } from "react-router-dom";
 
+import axios from "../../interceptor/AxiosRequestInterceptor";
+
+
 ReactFC.fcRoot(FusionCharts, Column2D, FusionTheme);
 
 const CHART_CONFIG = {
@@ -120,134 +123,135 @@ const FILTER_OPTIONS = [
     }
 ];
 
-const TABLE_DATA = [
-    {
-        service: "Amazon Elastic Compute Cloud",
-        jul2025: 42441.19,
-        aug2025: 36717.95,
-        sep2025: 38043.52,
-        oct2025: 33826.71,
-        nov2025: 31355.12,
-        dec2025: 29059.66
-    },
-    {
-        service: "Savings Plans for AWS Compute usage",
-        jul2025: 25296.00,
-        aug2025: 25296.00,
-        sep2025: 24480.00,
-        oct2025: 25296.00,
-        nov2025: 24480.00,
-        dec2025: 25296.00
-    },
-    {
-        service: "Amazon Relational Database Service",
-        jul2025: 24148.67,
-        aug2025: 24200.03,
-        sep2025: 24554.95,
-        oct2025: 23718.76,
-        nov2025: 22354.91,
-        dec2025: 22635.30
-    },
-    {
-        service: "AWS Marketplace",
-        jul2025: 20607.99,
-        aug2025: 28863.24,
-        sep2025: 23589.09,
-        oct2025: 13497.72,
-        nov2025: 26550.78,
-        dec2025: 26669.83
-    },
-    {
-        service: "AWS Data Transfer",
-        jul2025: 13140.00,
-        aug2025: 12162.33,
-        sep2025: 12068.50,
-        oct2025: 11798.63,
-        nov2025: 10960.59,
-        dec2025: 11037.00
-    },
-    {
-        service: "Amazon Simple Storage Service",
-        jul2025: 10390.56,
-        aug2025: 10473.91,
-        sep2025: 10619.57,
-        oct2025: 10050.02,
-        nov2025: 8905.74,
-        dec2025: 8881.36
-    },
-    {
-        service: "Amazon ElastiCache",
-        jul2025: 6104.43,
-        aug2025: 6266.93,
-        sep2025: 5524.13,
-        oct2025: 4039.58,
-        nov2025: 1909.08,
-        dec2025: 1972.72
-    },
-    {
-        service: "Amazon Simple Queue Service",
-        jul2025: 3006.26,
-        aug2025: 2842.71,
-        sep2025: 2477.82,
-        oct2025: 2505.44,
-        nov2025: 2577.78,
-        dec2025: 2665.12
-    },
-    {
-        service: "Elastic Load Balancing",
-        jul2025: 2466.40,
-        aug2025: 2514.69,
-        sep2025: 2530.81,
-        oct2025: 2543.78,
-        nov2025: 2336.28,
-        dec2025: 2381.53
-    },
-    {
-        service: "AWS Database Migration Service",
-        jul2025: 2288.48,
-        aug2025: 2295.74,
-        sep2025: 2222.27,
-        oct2025: 2295.74,
-        nov2025: 2186.39,
-        dec2025: 2216.87
-    },
-    {
-        service: "Amazon QuickSight",
-        jul2025: 1017.65,
-        aug2025: 1147.01,
-        sep2025: 1599.10,
-        oct2025: 2680.50,
-        nov2025: 3144.66,
-        dec2025: 3783.32
-    },
-    {
-        service: "AmazonCloudWatch",
-        jul2025: 1221.69,
-        aug2025: 1279.18,
-        sep2025: 1399.53,
-        oct2025: 1603.97,
-        nov2025: 1462.02,
-        dec2025: 1430.64
-    },
-    {
-        service: "Amazon Virtual Private Cloud",
-        jul2025: 1188.06,
-        aug2025: 1115.71,
-        sep2025: 1131.97,
-        oct2025: 1260.10,
-        nov2025: 1217.13,
-        dec2025: 1129.71
-    },
-    {
-        service: "AWS CloudTrail",
-        jul2025: 1245.01,
-        aug2025: 1230.53,
-        sep2025: 1150.22,
-        oct2025: 1069.82,
-        nov2025: 1044.34,
-        dec2025: 1016.27
-    }
-];
+// const TABLE_DATA = [
+//     {
+//         service: "Amazon Elastic Compute Cloud",
+//         jul2025: 42441.19,
+//         aug2025: 36717.95,
+//         sep2025: 38043.52,
+//         oct2025: 33826.71,
+//         nov2025: 31355.12,
+//         dec2025: 29059.66
+//     },
+//     {
+//         service: "Savings Plans for AWS Compute usage",
+//         jul2025: 25296.00,
+//         aug2025: 25296.00,
+//         sep2025: 24480.00,
+//         oct2025: 25296.00,
+//         nov2025: 24480.00,
+//         dec2025: 25296.00
+//     },
+//     {
+//         service: "Amazon Relational Database Service",
+//         jul2025: 24148.67,
+//         aug2025: 24200.03,
+//         sep2025: 24554.95,
+//         oct2025: 23718.76,
+//         nov2025: 22354.91,
+//         dec2025: 22635.30
+//     },
+//     {
+//         service: "AWS Marketplace",
+//         jul2025: 20607.99,
+//         aug2025: 28863.24,
+//         sep2025: 23589.09,
+//         oct2025: 13497.72,
+//         nov2025: 26550.78,
+//         dec2025: 26669.83
+//     },
+//     {
+//         service: "AWS Data Transfer",
+//         jul2025: 13140.00,
+//         aug2025: 12162.33,
+//         sep2025: 12068.50,
+//         oct2025: 11798.63,
+//         nov2025: 10960.59,
+//         dec2025: 11037.00
+//     },
+//     {
+//         service: "Amazon Simple Storage Service",
+//         jul2025: 10390.56,
+//         aug2025: 10473.91,
+//         sep2025: 10619.57,
+//         oct2025: 10050.02,
+//         nov2025: 8905.74,
+//         dec2025: 8881.36
+//     },
+//     {
+//         service: "Amazon ElastiCache",
+//         jul2025: 6104.43,
+//         aug2025: 6266.93,
+//         sep2025: 5524.13,
+//         oct2025: 4039.58,
+//         nov2025: 1909.08,
+//         dec2025: 1972.72
+//     },
+//     {
+//         service: "Amazon Simple Queue Service",
+//         jul2025: 3006.26,
+//         aug2025: 2842.71,
+//         sep2025: 2477.82,
+//         oct2025: 2505.44,
+//         nov2025: 2577.78,
+//         dec2025: 2665.12
+//     },
+//     {
+//         service: "Elastic Load Balancing",
+//         jul2025: 2466.40,
+//         aug2025: 2514.69,
+//         sep2025: 2530.81,
+//         oct2025: 2543.78,
+//         nov2025: 2336.28,
+//         dec2025: 2381.53
+//     },
+//     {
+//         service: "AWS Database Migration Service",
+//         jul2025: 2288.48,
+//         aug2025: 2295.74,
+//         sep2025: 2222.27,
+//         oct2025: 2295.74,
+//         nov2025: 2186.39,
+//         dec2025: 2216.87
+//     },
+//     {
+//         service: "Amazon QuickSight",
+//         jul2025: 1017.65,
+//         aug2025: 1147.01,
+//         sep2025: 1599.10,
+//         oct2025: 2680.50,
+//         nov2025: 3144.66,
+//         dec2025: 3783.32
+//     },
+//     {
+//         service: "AmazonCloudWatch",
+//         jul2025: 1221.69,
+//         aug2025: 1279.18,
+//         sep2025: 1399.53,
+//         oct2025: 1603.97,
+//         nov2025: 1462.02,
+//         dec2025: 1430.64
+//     },
+//     {
+//         service: "Amazon Virtual Private Cloud",
+//         jul2025: 1188.06,
+//         aug2025: 1115.71,
+//         sep2025: 1131.97,
+//         oct2025: 1260.10,
+//         nov2025: 1217.13,
+//         dec2025: 1129.71
+//     },
+//     {
+//         service: "AWS CloudTrail",
+//         jul2025: 1245.01,
+//         aug2025: 1230.53,
+//         sep2025: 1150.22,
+//         oct2025: 1069.82,
+//         nov2025: 1044.34,
+//         dec2025: 1016.27
+//     }
+// ];
+
 
 const generateChartDataFromTable = (data, groupBy) => {
     const months = [
@@ -307,12 +311,12 @@ const calculateTotal = (row) => {
     return row.jul2025 + row.aug2025 + row.sep2025 + row.oct2025 + row.nov2025 + row.dec2025;
 };
 
-const calculateColumnTotal = (column, data = TABLE_DATA) => {
+const calculateColumnTotal = (column, data) => {
     return data.reduce((sum, row) => sum + row[column], 0);
 };
 
 const FilterDropdown = ({ filter, selectedValues, onToggleValue, isOpen, onToggle }) => {
-    
+
     const allSelected = selectedValues.length === filter.values.length;
     const someSelected = selectedValues.length > 0 && !allSelected;
 
@@ -434,7 +438,7 @@ const FilterSidebar = ({ isOpen, onClose, appliedFilters, onApplyFilters, onRese
 
     return (
         <div className="fixed right-0 top-0 h-full w-96 bg-white shadow-2xl z-50 flex flex-col border-l border-gray-200">
-            
+
             <div className="p-6 border-b border-gray-200 bg-white">
                 <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
@@ -647,6 +651,9 @@ export const CostExplorer = () => {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [chartType, setChartType] = useState(CHART_CONFIG.defaultType);
 
+    const [tableData, setTableData] = useState([]);
+
+
     const initialFilters = {};
     FILTER_OPTIONS.forEach(filter => {
         initialFilters[filter.id] = [];
@@ -663,7 +670,7 @@ export const CostExplorer = () => {
     // Apply filters to data
     const getFilteredData = () => {
 
-        let filteredData = [...TABLE_DATA];
+        let filteredData = [...tableData];
 
         // Apply service filter
         if (appliedFilters.service && appliedFilters.service.length > 0) {
@@ -677,6 +684,80 @@ export const CostExplorer = () => {
 
         return filteredData;
     };
+
+
+
+
+    // const fetchCostData = async () => {
+    //     const payload = {
+    //         startDate: "2025-07-01",
+    //         endDate: "2025-12-31",
+    //         groupBy: selectedGroupBy.toUpperCase(), // SERVICE, REGION, etc
+    //         service: appliedFilters.service || [],
+    //         accountId: appliedFilters.account || [],
+    //         region: appliedFilters.region || [],
+    //         platform: appliedFilters.platform || [],
+    //         usageTypeGroup: appliedFilters.usageGroup || [],
+    //         purchaseOption: appliedFilters.purchaseOption || [],
+    //         billingEntity: appliedFilters.billingEntity || []
+    //     };
+
+    //     const res = await axios.post("/api/cost-explorer", payload);
+
+    //     // 🔁 Backend → UI format
+    //     const mapped = res.data.map(item => ({
+    //         service: item.groupValue,
+    //         jul2025: item.monthlyCost.M7 || 0,
+    //         aug2025: item.monthlyCost.M8 || 0,
+    //         sep2025: item.monthlyCost.M9 || 0,
+    //         oct2025: item.monthlyCost.M10 || 0,
+    //         nov2025: item.monthlyCost.M11 || 0,
+    //         dec2025: item.monthlyCost.M12 || 0
+    //     }));
+
+    //     setTableData(mapped);
+    // };
+
+    //  useEffect(() => {
+    //     fetchCostData();
+    // }, [appliedFilters, selectedGroupBy]);
+
+    useEffect(() => {
+        const fetchCostData = async () => {
+            const payload = {
+                startDate: "2025-07-01",
+                endDate: "2025-12-31",
+                groupBy: selectedGroupBy.toUpperCase(),
+                service: appliedFilters.service || [],
+                accountId: appliedFilters.account || [],
+                region: appliedFilters.region || [],
+                platform: appliedFilters.platform || [],
+                usageTypeGroup: appliedFilters.usageGroup || [],
+                purchaseOption: appliedFilters.purchaseOption || [],
+                billingEntity: appliedFilters.billingEntity || []
+            };
+
+            const res = await axios.post("/api/cost-explorer", payload);
+            console.log("Response of Cost API : ", res);
+
+            const mapped = res.data.map(item => ({
+                service: item.groupKey,
+                jul2025: item.monthlyCost.M7 || 0,
+                aug2025: item.monthlyCost.M8 || 0,
+                sep2025: item.monthlyCost.M9 || 0,
+                oct2025: item.monthlyCost.M10 || 0,
+                nov2025: item.monthlyCost.M11 || 0,
+                dec2025: item.monthlyCost.M12 || 0
+            }));
+
+            console.log("Mapped data at frontend: ", mapped);
+
+            setTableData(mapped);
+        };
+
+        fetchCostData();
+    }, [appliedFilters, selectedGroupBy]);
+
 
     const filteredData = getFilteredData();
 

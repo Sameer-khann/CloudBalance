@@ -12,24 +12,24 @@ import onboadingImg2c from "../../assets/Onboarding2c.png"
 import onboadingImg3a from "../../assets/Onboarding3a.png"
 import onboadingImg3b from "../../assets/Onboarding3b.png"
 import onboadingImg3c from "../../assets/Onboarding3c.png"
-import axios from '../../interceptor/AxiosRequestInterceptor';
+// import axios from '../../interceptor/AxiosRequestInterceptor';
 import axiosInstance from '../../interceptor/AxiosRequestInterceptor';
 
 const Onboarding = () => {
     const navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState({
-        roleArn: '',
+        arnNumber: '',
         accountId: '',
         accountName: '',
         // roleName: 'CK-Tuner-Role-dev2'
     });
 
-    const validData = !!(formData.roleArn && formData.accountId && formData.accountName);
+    const validData = !!(formData.arnNumber && formData.accountId && formData.accountName);
 
     // console.log("validData : ", validData)
     console.log({
-        roleArn: formData.roleArn,
+        arnNumber: formData.arnNumber,
         accountId: formData.accountId,
         accountName: formData.accountName,
         validData
@@ -82,17 +82,34 @@ const Onboarding = () => {
 
 
 
-const addAccount = () => {
+// const addAccount = () => {
 
-    const res = axiosInstance.post('/account', formData);
+//     const res = axiosInstance.post('/account', formData);
 
+//     console.log("Data from Account post API call : ", res);
+
+//     navigate("/dashboard/user");
     
-}
+// }
 
 
-    const handleNext = () => {
+    const handleNext = async () => {
         if (currentStep < steps.length) {
             setCurrentStep(currentStep + 1);
+
+            return;
+        }
+
+        try{
+            const res = await axiosInstance.post("/account", formData);
+            console.log("Data from create account API call", res)
+
+            toast.success("Account Created Successfully")
+            navigate('/dashboard/user')
+        }
+        catch(err){
+            console.log("En error occured: ", err);
+            toast.error("Account Creation Failed")
         }
     };
 
@@ -127,9 +144,9 @@ const addAccount = () => {
         if (currentStep < steps.length) {
             return steps[currentStep].name;
         }
-        else if(currentStep == steps.length){
-            addAccount();
-        }
+        // else if(currentStep == steps.length){
+        //     addAccount();
+        // }
         return 'Complete';
     };
 
@@ -336,11 +353,11 @@ const addAccount = () => {
                                                 type="text"
                                                 placeholder="Enter the IAM Role ARN"
                                                 maxLength={30}
-                                                value={formData.roleArn}
-                                                onChange={(e) => setFormData({ ...formData, roleArn: e.target.value })}
+                                                value={formData.arnNumber}
+                                                onChange={(e) => setFormData({ ...formData, arnNumber: e.target.value })}
                                                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                                             />
-                                            {formData.roleArn === '' && (
+                                            {formData.arnNumber === '' && (
                                                 <p className="text-sm text-red-500 mt-1">*All field are required</p>
                                             )}
                                         </div>

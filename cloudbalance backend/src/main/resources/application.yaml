@@ -17,3 +17,12 @@ spring:
 jwt:
   secret: SameerKhanIsAFullStackDeveloperAtCloudKeeper
   expiration: 7200000
+
+snowflake:
+  url: https://nwbzkah-gk39699.snowflakecomputing.com
+  username: SAMIRKHAN
+  password: Technology@2021
+  warehouse: COMPUTE_WH
+  database: CLOUDBALANCE
+  schema: PUBLIC
+  role : ACCOUNTADMIN

@@ -19,6 +19,9 @@ public class AccountEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(nullable = false, unique = true)
+    private long accountId;
+
     @Column(nullable = false)
     private String accountName;
 

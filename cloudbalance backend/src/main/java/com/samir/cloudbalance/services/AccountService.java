@@ -1,6 +1,7 @@
 package com.samir.cloudbalance.services;
 
 import com.samir.cloudbalance.dto.AccountInfoDto;
+import com.samir.cloudbalance.dto.AccountResponseDto;
 import com.samir.cloudbalance.dto.AssignAccountsDto;
 import com.samir.cloudbalance.model.AccountEntity;
 import com.samir.cloudbalance.model.UserEntity;
@@ -25,7 +26,7 @@ public class AccountService {
         this.userRepo = userRepo;
     }
 
-    public void addAccount(AccountInfoDto accountInfoDto){
+    public AccountResponseDto addAccount(AccountInfoDto accountInfoDto){
 
         AccountEntity existingAccount = accountRepo.findByArnNumber(accountInfoDto.getArnNumber());
 
@@ -35,11 +36,25 @@ public class AccountService {
 
         AccountEntity accountEntity = new AccountEntity();
 
+        accountEntity.setAccountId(accountInfoDto.getAccountId());
         accountEntity.setAccountName(accountInfoDto.getAccountName());
         accountEntity.setArnNumber(accountInfoDto.getArnNumber());
 
         System.out.println(accountEntity);
         accountRepo.save(accountEntity);
+
+        AccountResponseDto responseDTO = new AccountResponseDto();
+        responseDTO.setAccountID(accountEntity.getAccountId());
+        responseDTO.setAccountName(accountEntity.getAccountName());
+        responseDTO.setArnNumber(accountEntity.getArnNumber());
+
+        return responseDTO;
+
+//        return new AccountResponseDto(
+//                accountEntity.getAccountId(),
+//                accountEntity.getAccountName(),
+//                accountEntity.getArnNumber()
+//        );
     }
 
     public List<AccountInfoDto> getAllAccounts() {
@@ -48,7 +63,7 @@ public class AccountService {
                 .stream()
                 .map(account -> {
                     AccountInfoDto dto = new AccountInfoDto();
-                    dto.setId(account.getId());
+                    dto.setAccountId(account.getId());
                     dto.setAccountName(account.getAccountName());
                     dto.setArnNumber(account.getArnNumber());
                     return dto;
@@ -79,7 +94,7 @@ public class AccountService {
         return user.getAssignedAccounts().stream().map(
                 account -> {
                     AccountInfoDto dto = new AccountInfoDto();
-                    dto.setId(account.getId());
+                    dto.setAccountId(account.getId());
                     dto.setAccountName(account.getAccountName());
                     dto.setArnNumber(account.getArnNumber());
                     return dto;

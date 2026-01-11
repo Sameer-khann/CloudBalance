@@ -1,9 +1,12 @@
 package com.samir.cloudbalance.controller;
 
 import com.samir.cloudbalance.dto.AccountInfoDto;
+import com.samir.cloudbalance.dto.AccountResponseDto;
 import com.samir.cloudbalance.dto.AssignAccountsDto;
 import com.samir.cloudbalance.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -26,10 +29,10 @@ public class AccountController {
 
     @PreAuthorize("hasRole('Admin')")
     @PostMapping("/account")
-    public void addAccount(@RequestBody AccountInfoDto accountInfoDto){
+    public ResponseEntity<AccountResponseDto> addAccount(@RequestBody AccountInfoDto accountInfoDto){
 
-        accountService.addAccount(accountInfoDto);
-
+        AccountResponseDto createdAccount = accountService.addAccount(accountInfoDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdAccount);
     }
 
     @PreAuthorize("hasAnyRole('Admin', 'ReadOnly')")
