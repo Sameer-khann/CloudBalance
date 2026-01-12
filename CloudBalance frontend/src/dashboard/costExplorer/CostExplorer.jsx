@@ -20,13 +20,20 @@ const CHART_CONFIG = {
 };
 
 const GROUP_BY_OPTIONS = [
-    { id: "service", label: "Service" },
-    { id: "account", label: "Account ID" },
-    { id: "instance", label: "Instance Type" },
-    { id: "usage", label: "Usage Type" },
-    { id: "platform", label: "Platform" },
-    { id: "region", label: "Region" },
-    { id: "usageGroup", label: "Usage Type Group" }
+    { id: "SERVICE", label: "Service" },
+    { id: "ACCOUNT_ID", label: "Account ID" },
+    { id: "INSTANCE_TYPE", label: "Instance Type" },
+    { id: "USAGE_TYPE", label: "Usage Type" },
+    { id: "PLATFORM", label: "Platform" },
+    { id: "REGION", label: "Region" },
+    { id: "USAGE_TYPE_GROUP", label: "Usage Type Group" },
+    { id: "PURCHASE_OPTION", label: "Purchase Option" },
+    { id: "API_OPERATION", label: "API Operation" },
+    { id: "RESOURCE", label: "Resource" },
+    { id: "AVAILABILITY_ZONE", label: "Availability Zone" },
+    { id: "TENANCY", label: "Tenancy" },
+    { id: "LEGAL_ENTITY", label: "Legal Entity" },
+    { id: "BILLING_ENTITY", label: "Billing Entity" }
 ];
 
 // Filter Configuration - Define all available filters
@@ -96,11 +103,11 @@ const FILTER_OPTIONS = [
         label: "Resource",
         values: ["i-1234567890abcdef0", "vol-1234567890abcdef0", "arn:aws:s3:::bucket-name"]
     },
-    {
-        id: "chargeType",
-        label: "Charge Type",
-        values: ["Usage", "Tax", "Credit", "Refund"]
-    },
+    // {
+    //     id: "chargeType",
+    //     label: "Charge Type",
+    //     values: ["Usage", "Tax", "Credit", "Refund"]
+    // },
     {
         id: "availabilityZone",
         label: "Availability Zone",
@@ -123,134 +130,23 @@ const FILTER_OPTIONS = [
     }
 ];
 
-// const TABLE_DATA = [
-//     {
-//         service: "Amazon Elastic Compute Cloud",
-//         jul2025: 42441.19,
-//         aug2025: 36717.95,
-//         sep2025: 38043.52,
-//         oct2025: 33826.71,
-//         nov2025: 31355.12,
-//         dec2025: 29059.66
-//     },
-//     {
-//         service: "Savings Plans for AWS Compute usage",
-//         jul2025: 25296.00,
-//         aug2025: 25296.00,
-//         sep2025: 24480.00,
-//         oct2025: 25296.00,
-//         nov2025: 24480.00,
-//         dec2025: 25296.00
-//     },
-//     {
-//         service: "Amazon Relational Database Service",
-//         jul2025: 24148.67,
-//         aug2025: 24200.03,
-//         sep2025: 24554.95,
-//         oct2025: 23718.76,
-//         nov2025: 22354.91,
-//         dec2025: 22635.30
-//     },
-//     {
-//         service: "AWS Marketplace",
-//         jul2025: 20607.99,
-//         aug2025: 28863.24,
-//         sep2025: 23589.09,
-//         oct2025: 13497.72,
-//         nov2025: 26550.78,
-//         dec2025: 26669.83
-//     },
-//     {
-//         service: "AWS Data Transfer",
-//         jul2025: 13140.00,
-//         aug2025: 12162.33,
-//         sep2025: 12068.50,
-//         oct2025: 11798.63,
-//         nov2025: 10960.59,
-//         dec2025: 11037.00
-//     },
-//     {
-//         service: "Amazon Simple Storage Service",
-//         jul2025: 10390.56,
-//         aug2025: 10473.91,
-//         sep2025: 10619.57,
-//         oct2025: 10050.02,
-//         nov2025: 8905.74,
-//         dec2025: 8881.36
-//     },
-//     {
-//         service: "Amazon ElastiCache",
-//         jul2025: 6104.43,
-//         aug2025: 6266.93,
-//         sep2025: 5524.13,
-//         oct2025: 4039.58,
-//         nov2025: 1909.08,
-//         dec2025: 1972.72
-//     },
-//     {
-//         service: "Amazon Simple Queue Service",
-//         jul2025: 3006.26,
-//         aug2025: 2842.71,
-//         sep2025: 2477.82,
-//         oct2025: 2505.44,
-//         nov2025: 2577.78,
-//         dec2025: 2665.12
-//     },
-//     {
-//         service: "Elastic Load Balancing",
-//         jul2025: 2466.40,
-//         aug2025: 2514.69,
-//         sep2025: 2530.81,
-//         oct2025: 2543.78,
-//         nov2025: 2336.28,
-//         dec2025: 2381.53
-//     },
-//     {
-//         service: "AWS Database Migration Service",
-//         jul2025: 2288.48,
-//         aug2025: 2295.74,
-//         sep2025: 2222.27,
-//         oct2025: 2295.74,
-//         nov2025: 2186.39,
-//         dec2025: 2216.87
-//     },
-//     {
-//         service: "Amazon QuickSight",
-//         jul2025: 1017.65,
-//         aug2025: 1147.01,
-//         sep2025: 1599.10,
-//         oct2025: 2680.50,
-//         nov2025: 3144.66,
-//         dec2025: 3783.32
-//     },
-//     {
-//         service: "AmazonCloudWatch",
-//         jul2025: 1221.69,
-//         aug2025: 1279.18,
-//         sep2025: 1399.53,
-//         oct2025: 1603.97,
-//         nov2025: 1462.02,
-//         dec2025: 1430.64
-//     },
-//     {
-//         service: "Amazon Virtual Private Cloud",
-//         jul2025: 1188.06,
-//         aug2025: 1115.71,
-//         sep2025: 1131.97,
-//         oct2025: 1260.10,
-//         nov2025: 1217.13,
-//         dec2025: 1129.71
-//     },
-//     {
-//         service: "AWS CloudTrail",
-//         jul2025: 1245.01,
-//         aug2025: 1230.53,
-//         sep2025: 1150.22,
-//         oct2025: 1069.82,
-//         nov2025: 1044.34,
-//         dec2025: 1016.27
-//     }
-// ];
+const FILTER_META = [
+    { id: "service", label: "Service" },
+    { id: "account", label: "Account ID" },
+    { id: "instanceType", label: "Instance Type" },
+    { id: "usageType", label: "Usage Type" },
+    { id: "platform", label: "Platform" },
+    { id: "region", label: "Region" },
+    { id: "usageTypeGroup", label: "Usage Type Group" },
+    { id: "purchaseOption", label: "Purchase Option" },
+    { id: "apiOperation", label: "API Operation" },
+    { id: "resource", label: "Resource" },
+    { id: "availabilityZone", label: "Availability Zone" },
+    { id: "tenancy", label: "Tenancy" },
+    { id: "legalEntity", label: "Legal Entity" },
+    { id: "billingEntity", label: "Billing Entity" }
+];
+
 
 
 const generateChartDataFromTable = (data, groupBy) => {
@@ -393,7 +289,7 @@ const FilterDropdown = ({ filter, selectedValues, onToggleValue, isOpen, onToggl
 };
 
 
-const FilterSidebar = ({ isOpen, onClose, appliedFilters, onApplyFilters, onResetFilters }) => {
+const FilterSidebar = ({ isOpen, onClose, appliedFilters, onApplyFilters, onResetFilters, filterOptions }) => {
     const [tempFilters, setTempFilters] = useState(appliedFilters);
     const [openDropdowns, setOpenDropdowns] = useState({});
 
@@ -463,7 +359,7 @@ const FilterSidebar = ({ isOpen, onClose, appliedFilters, onApplyFilters, onRese
 
             {/* Filter List */}
             <div className="flex-1 overflow-y-auto">
-                {FILTER_OPTIONS.map((filter) => (
+                {filterOptions.map((filter) => (
                     <FilterDropdown
                         key={filter.id}
                         filter={filter}
@@ -534,7 +430,17 @@ const ChartTypeSelector = ({ currentType, onTypeChange }) => {
     );
 };
 
-const CostDataTable = ({ data }) => {
+const CostDataTable = ({ data , selectedGroupBy}) => {
+
+    // const [activeFilter, setActiveFilter] = useState("SERVICE")
+
+
+    // for(const filterOptions of GROUP_BY_OPTIONS){
+    //     if(filterOptions.id == selectedGroupBy){
+    //         setActiveFilter(GROUP_BY_OPTIONS.id);
+    //     }
+    // }
+
     return (
         <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
             <div className="bg-blue-50 border-b border-blue-200 px-6 py-3">
@@ -548,7 +454,7 @@ const CostDataTable = ({ data }) => {
                     <thead className="bg-gray-50 border-b border-gray-200">
                         <tr>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider sticky left-0 bg-gray-50 z-10">
-                                Service
+                                {selectedGroupBy}
                             </th>
                             <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
                                 Jul 2025
@@ -647,19 +553,68 @@ const CostDataTable = ({ data }) => {
 };
 
 export const CostExplorer = () => {
-    const [selectedGroupBy, setSelectedGroupBy] = useState("service");
+    const [selectedGroupBy, setSelectedGroupBy] = useState("SERVICE");
+    const [groupByOptions, setGroupByOptions] = useState(GROUP_BY_OPTIONS);
+
+
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [chartType, setChartType] = useState(CHART_CONFIG.defaultType);
 
     const [tableData, setTableData] = useState([]);
 
 
+    // const initialFilters = {};
+    // FILTER_OPTIONS.forEach(filter => {
+    //     initialFilters[filter.id] = [];
+    // });
+
+    const [filterOptions, setFilterOptions] = useState([]);
+
     const initialFilters = {};
-    FILTER_OPTIONS.forEach(filter => {
-        initialFilters[filter.id] = [];
+    filterOptions.forEach(f => {
+        initialFilters[f.id] = [];
     });
 
     const [appliedFilters, setAppliedFilters] = useState(initialFilters);
+
+    const handleFilterOrder = (selectedId) => {
+        setSelectedGroupBy(selectedId);
+
+        setGroupByOptions((prev) => {
+            const selectedItem = prev.find(opt => opt.id === selectedId);
+            const remainingItems = prev.filter(opt => opt.id !== selectedId);
+
+            return [selectedItem, ...remainingItems];
+        });
+    };
+
+
+
+    useEffect(() => {
+        if (filterOptions.length > 0) {
+            const empty = {};
+            filterOptions.forEach(f => (empty[f.id] = []));
+            setAppliedFilters(empty);
+        }
+    }, [filterOptions]);
+
+
+
+    useEffect(() => {
+        const fetchFilters = async () => {
+            const res = await axios.get("/api/cost-explorer/filters");
+
+            const dynamicFilters = FILTER_META.map(meta => ({
+                ...meta,
+                values: res.data.filters[meta.id] || []
+            }));
+
+            setFilterOptions(dynamicFilters);
+        };
+
+        fetchFilters();
+    }, []);
+
 
     const { setPageTitle } = useOutletContext();
 
@@ -679,48 +634,20 @@ export const CostExplorer = () => {
             );
         }
 
+        if (appliedFilters.accountId && appliedFilters.accountId.length > 0) {
+            filteredData = filteredData.filter(row => appliedFilters.accountId.includes(row.accountId));
+        }
+
+        filteredData.sort(
+            (a, b) => calculateTotal(b) - calculateTotal(a)
+        )
+
         // Add more filter logic here when you have actual data with these fields
         // For now, we're only filtering by service since that's the only field in TABLE_DATA
 
         return filteredData;
     };
 
-
-
-
-    // const fetchCostData = async () => {
-    //     const payload = {
-    //         startDate: "2025-07-01",
-    //         endDate: "2025-12-31",
-    //         groupBy: selectedGroupBy.toUpperCase(), // SERVICE, REGION, etc
-    //         service: appliedFilters.service || [],
-    //         accountId: appliedFilters.account || [],
-    //         region: appliedFilters.region || [],
-    //         platform: appliedFilters.platform || [],
-    //         usageTypeGroup: appliedFilters.usageGroup || [],
-    //         purchaseOption: appliedFilters.purchaseOption || [],
-    //         billingEntity: appliedFilters.billingEntity || []
-    //     };
-
-    //     const res = await axios.post("/api/cost-explorer", payload);
-
-    //     // 🔁 Backend → UI format
-    //     const mapped = res.data.map(item => ({
-    //         service: item.groupValue,
-    //         jul2025: item.monthlyCost.M7 || 0,
-    //         aug2025: item.monthlyCost.M8 || 0,
-    //         sep2025: item.monthlyCost.M9 || 0,
-    //         oct2025: item.monthlyCost.M10 || 0,
-    //         nov2025: item.monthlyCost.M11 || 0,
-    //         dec2025: item.monthlyCost.M12 || 0
-    //     }));
-
-    //     setTableData(mapped);
-    // };
-
-    //  useEffect(() => {
-    //     fetchCostData();
-    // }, [appliedFilters, selectedGroupBy]);
 
     useEffect(() => {
         const fetchCostData = async () => {
@@ -800,7 +727,8 @@ export const CostExplorer = () => {
                 plotSpacePercent: "70",
                 divLineAlpha: "20",
                 baseFontSize: "13",
-                baseFont: "Inter, sans-serif"
+                baseFont: "Inter, sans-serif",
+                plotToolText:"$ $value"
             },
             categories: [{ category: chartData.categories }],
             dataset: chartData.dataset
@@ -835,19 +763,20 @@ export const CostExplorer = () => {
                         <span className="text-sm font-medium text-gray-700">Group By:</span>
 
                         <div className="flex items-center gap-2 flex-wrap">
-                            {GROUP_BY_OPTIONS.map((option) => (
+                            {groupByOptions.map((option) => (
                                 <button
                                     key={option.id}
-                                    onClick={() => setSelectedGroupBy(option.id)}
+                                    onClick={() => handleFilterOrder(option.id)}
                                     className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${selectedGroupBy === option.id
-                                        ? "bg-blue-600 text-white shadow-md"
-                                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                            ? "bg-blue-600 text-white shadow-md"
+                                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                                         }`}
                                 >
                                     {option.label}
                                 </button>
                             ))}
                         </div>
+
 
                         <button
                             onClick={() => setIsFilterOpen(true)}
@@ -884,7 +813,7 @@ export const CostExplorer = () => {
                     </div>
                 </div>
 
-                <CostDataTable data={filteredData} />
+                <CostDataTable data={filteredData} selectedGroupBy={selectedGroupBy} />
             </div>
 
             <FilterSidebar
@@ -893,6 +822,7 @@ export const CostExplorer = () => {
                 appliedFilters={appliedFilters}
                 onApplyFilters={handleApplyFilters}
                 onResetFilters={handleResetFilters}
+                filterOptions={filterOptions}
             />
         </div>
     );

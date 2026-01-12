@@ -1,5 +1,6 @@
-package com.samir.cloudbalance.service;
+package com.samir.cloudbalance.services;
 
+import com.samir.cloudbalance.dto.CostExplorerFilterResponseDto;
 import com.samir.cloudbalance.dto.request.CostExplorerRequestDto;
 import com.samir.cloudbalance.dto.response.CostExplorerResponseDto;
 import com.snowflake.snowpark.*;
@@ -29,7 +30,9 @@ public class CostExplorerService {
 
     public List<CostExplorerResponseDto> fetchCostData(CostExplorerRequestDto req) {
 
-        DataFrame df = session.sql("select * from CLOUDBALANCE.PUBLIC.CLOUD_COST_TABLE");
+        System.out.println("fetchCostData req : " + req);
+
+    DataFrame df = session.sql("select * from CLOUDBALANCE.PUBLIC.CLOUD_COST_TABLE");
 
         df = df.filter(
                 col("BILL_DATE").between(
@@ -40,10 +43,17 @@ public class CostExplorerService {
 
         df = applyFilter(df, "SERVICE", req.getService());
         df = applyFilter(df, "ACCOUNT_ID", req.getAccountId());
-        df = applyFilter(df, "REGION", req.getRegion());
+        df = applyFilter(df, "INSTANCE_TYPE", req.getInstanceType());
+        df = applyFilter(df, "USAGE_TYPE", req.getUsageType());
         df = applyFilter(df, "PLATFORM", req.getPlatform());
+        df = applyFilter(df, "REGION", req.getRegion());
         df = applyFilter(df, "USAGE_TYPE_GROUP", req.getUsageTypeGroup());
         df = applyFilter(df, "PURCHASE_OPTION", req.getPurchaseOption());
+        df = applyFilter(df, "API_OPERATION", req.getApiOperation());
+        df = applyFilter(df, "RESOURCE", req.getResource());
+        df = applyFilter(df, "AVAILABILITY_ZONE", req.getAvailabilityZone());
+        df = applyFilter(df, "TENANCY", req.getTenancy());
+        df = applyFilter(df, "LEGAL_ENTITY", req.getLegalEntity());
         df = applyFilter(df, "BILLING_ENTITY", req.getBillingEntity());
 
         DataFrame result = df
@@ -56,13 +66,15 @@ public class CostExplorerService {
                         sum(col("COST")).as("TOTAL_COST")
                 });
 
-
         Row[] rows = result.collect();
+
+        System.out.println("Rows: " + Arrays.toString(rows));
 
         Map<String, Map<String, Double>> map = new HashMap<>();
 
         for (Row row : rows) {
-            String key = row.getString(0);
+            String key = String.valueOf(row.get(0));
+//            String key = row.getString(0);
             String month = "M" + row.getInt(1);
 //            double cost = row.getDouble(2);
 
@@ -91,4 +103,49 @@ public class CostExplorerService {
         return df;
     }
 
+
+    public CostExplorerFilterResponseDto fetchAvailableFilters() {
+
+        DataFrame df = session.sql(
+                "SELECT " +
+                        "SERVICE, " +
+                        "ACCOUNT_ID, " +
+                        "REGION, " +
+                        "PLATFORM, " +
+                        "USAGE_TYPE_GROUP, " +
+                        "PURCHASE_OPTION, " +
+                        "BILLING_ENTITY " +
+                        "FROM CLOUDBALANCE.PUBLIC.CLOUD_COST_TABLE"
+        );
+
+        Map<String, List<String>> filters = new HashMap<>();
+
+        filters.put("service", extractDistinct(df, "SERVICE"));
+        filters.put("account", extractDistinct(df, "ACCOUNT_ID"));
+        filters.put("region", extractDistinct(df, "REGION"));
+        filters.put("platform", extractDistinct(df, "PLATFORM"));
+        filters.put("usageGroup", extractDistinct(df, "USAGE_TYPE_GROUP"));
+        filters.put("purchaseOption", extractDistinct(df, "PURCHASE_OPTION"));
+        filters.put("billingEntity", extractDistinct(df, "BILLING_ENTITY"));
+
+        CostExplorerFilterResponseDto response = new CostExplorerFilterResponseDto();
+        response.setFilters(filters);
+        return response;
+    }
+
+    private List<String> extractDistinct(DataFrame df, String columnName) {
+        Row[] rows = df
+                .select(new Column[]{col(columnName)})
+                .distinct()
+                .collect();
+
+        List<String> result = new ArrayList<>();
+        for (Row row : rows) {
+            Object value = row.get(0);
+            if (value != null) {
+                result.add(value.toString());
+            }
+        }
+        return result;
+    }
 }
