@@ -7,6 +7,10 @@ export const AccountAssignment = ({ selectedAccounts, setSelectedAccounts }) => 
 
     console.log("selectedAccounts: ", selectedAccounts);
 
+
+    console.log("availableAccounts: ",availableAccounts);
+    console.log("selectedAccounts: ",selectedAccounts);
+
     useEffect(() => {
         let isMounted = true;
 
@@ -17,10 +21,10 @@ export const AccountAssignment = ({ selectedAccounts, setSelectedAccounts }) => 
                 if (!isMounted) return;
 
                 // remove already assigned accounts
-                const selectedIds = new Set(selectedAccounts.map(acc => acc.id));
+                const selectedIds = new Set(selectedAccounts.map(acc => acc.accountId));
 
                 const unassigned = res.data.filter(
-                    acc => !selectedIds.has(acc.id)
+                    acc => !selectedIds.has(acc.accountId)
                 );
 
                 setAvailableAccounts(unassigned);
@@ -76,12 +80,12 @@ export const AccountAssignment = ({ selectedAccounts, setSelectedAccounts }) => 
 
     const assignAccount = (account) => {
         setSelectedAccounts(prev => [...prev, account]);
-        setAvailableAccounts(prev => prev.filter(a => a.id !== account.id));
+        setAvailableAccounts(prev => prev.filter(a => a.accountId !== account.accountId));
     };
 
     const unAssignAccount = (account) => {
         setAvailableAccounts(prev => [...prev, account]);
-        setSelectedAccounts(prev => prev.filter(a => a.id !== account.id));
+        setSelectedAccounts(prev => prev.filter(a => a.accountId !== account.accountId));
     };
 
     return (
@@ -95,7 +99,7 @@ export const AccountAssignment = ({ selectedAccounts, setSelectedAccounts }) => 
 
                     {availableAccounts.map(acc => (
                         <div
-                            key={acc.id}
+                            key={acc.accountId}
                             className="flex justify-between items-center p-2 border mb-2 cursor-pointer gap-3"
                         >
                             <span>{acc.accountName}</span>
@@ -124,7 +128,7 @@ export const AccountAssignment = ({ selectedAccounts, setSelectedAccounts }) => 
 
                     {selectedAccounts.map(acc => (
                         <div
-                            key={acc.id}
+                            key={acc.accountId}
                             className="flex justify-between items-center p-2 border mb-2 cursor-pointer gap-3"
                         >
                             <button

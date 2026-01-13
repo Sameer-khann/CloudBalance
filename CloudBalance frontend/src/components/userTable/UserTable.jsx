@@ -15,8 +15,8 @@ export const UserTable = () => {
     const { setPageTitle } = useOutletContext();
     const navigate = useNavigate();
 
-    const token = localStorage.getItem("token");
-            console.log("token" , token);
+    // const token = localStorage.getItem("token");
+            // console.log("token" , token);
     
     useEffect(() => {
         

@@ -3,6 +3,7 @@ package com.samir.cloudbalance.security;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +11,7 @@ import java.security.Key;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
-
+@Slf4j
 @Component
 public class JwtUtil {
 
@@ -30,8 +31,8 @@ public class JwtUtil {
 
     public String generateToken(String email, String role){
 
-        System.out.println("JWT exp time : " + EXP_TIME);
-
+//        System.out.println("JWT exp time : " + EXP_TIME);
+            log.info("JWT exp time : {}", EXP_TIME);
         return Jwts.builder()
                 .setSubject(email)
 //                .claim("role", role)

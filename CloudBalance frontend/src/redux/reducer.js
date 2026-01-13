@@ -1,4 +1,4 @@
-import { SIDEBAR_TOGGLE, USER_DATA } from "./actionType"
+import { SIDEBAR_TOGGLE, USER_DATA, DELETE_USER } from "./actionType.js"
 
 const initialValues = {
     open: true,
@@ -18,6 +18,11 @@ export const toggleReducer = (state = initialValues, action) => {
             ...state,
             user: action.value,
         }
+        case DELETE_USER :
+            return{
+                ...state,
+                user: null,
+            }
         default:
             return state;
     }

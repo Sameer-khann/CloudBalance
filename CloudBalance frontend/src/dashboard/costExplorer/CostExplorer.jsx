@@ -430,7 +430,7 @@ const ChartTypeSelector = ({ currentType, onTypeChange }) => {
     );
 };
 
-const CostDataTable = ({ data , selectedGroupBy}) => {
+const CostDataTable = ({ data, selectedGroupBy }) => {
 
     // const [activeFilter, setActiveFilter] = useState("SERVICE")
 
@@ -590,15 +590,30 @@ export const CostExplorer = () => {
 
 
 
-    useEffect(() => {
-        if (filterOptions.length > 0) {
-            const empty = {};
-            filterOptions.forEach(f => (empty[f.id] = []));
-            setAppliedFilters(empty);
-        }
-    }, [filterOptions]);
+    // useEffect(() => {
+    //     if (filterOptions.length > 0) {
+    //         const empty = {};
+    //         filterOptions.forEach(f => (empty[f.id] = []));
+    //         setAppliedFilters(empty);
+    //     }
+    // }, [filterOptions]);
 
 
+
+    // useEffect(() => {
+    //     const fetchFilters = async () => {
+    //         const res = await axios.get("/api/cost-explorer/filters");
+
+    //         const dynamicFilters = FILTER_META.map(meta => ({
+    //             ...meta,
+    //             values: res.data.filters[meta.id] || []
+    //         }));
+
+    //         setFilterOptions(dynamicFilters);
+    //     };
+
+    //     fetchFilters();
+    // }, []);
 
     useEffect(() => {
         const fetchFilters = async () => {
@@ -609,11 +624,18 @@ export const CostExplorer = () => {
                 values: res.data.filters[meta.id] || []
             }));
 
+            const emptyFilters = {};
+            dynamicFilters.forEach(f => {
+                emptyFilters[f.id] = [];
+            });
+
             setFilterOptions(dynamicFilters);
+            setAppliedFilters(emptyFilters); // ✅ SAFE
         };
 
         fetchFilters();
     }, []);
+
 
 
     const { setPageTitle } = useOutletContext();
@@ -728,7 +750,7 @@ export const CostExplorer = () => {
                 divLineAlpha: "20",
                 baseFontSize: "13",
                 baseFont: "Inter, sans-serif",
-                plotToolText:"$ $value"
+                plotToolText: "$ $value"
             },
             categories: [{ category: chartData.categories }],
             dataset: chartData.dataset
@@ -767,9 +789,9 @@ export const CostExplorer = () => {
                                 <button
                                     key={option.id}
                                     onClick={() => handleFilterOrder(option.id)}
-                                    className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${selectedGroupBy === option.id
-                                            ? "bg-blue-600 text-white shadow-md"
-                                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                    className={`px-2 py-2 text-sm font-medium rounded-md transition-all ${selectedGroupBy === option.id
+                                        ? "bg-blue-600 text-white shadow-md"
+                                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                                         }`}
                                 >
                                     {option.label}

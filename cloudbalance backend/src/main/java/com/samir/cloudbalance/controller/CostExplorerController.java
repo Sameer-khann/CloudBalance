@@ -20,12 +20,13 @@ public class CostExplorerController {
         this.service = service;
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @GetMapping
     public void getalldata(){
         service.getalldata();
     }
 
-//    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('Admin')")
     @PostMapping
     public List<CostExplorerResponseDto> getCostData(
             @RequestBody CostExplorerRequestDto request

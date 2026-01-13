@@ -1,4 +1,4 @@
-import React from 'react'
+// import React from 'react'
 import logo from '../../assets/cloudbalance.png'
 
 import MenuIcon from '@mui/icons-material/Menu';
@@ -7,9 +7,10 @@ import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { useDispatch, useSelector } from 'react-redux';
-import { sidebarToggle } from '../../redux/actions';
+import { sidebarToggle, deleteUser } from '../../redux/actions';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../interceptor/AxiosRequestInterceptor';
+// import { persistor } from '../../redux/store';
 // import { toggleReducer } from '../../redux/reducer';
 
 
@@ -20,7 +21,7 @@ export const Header = () => {
     const currUser = useSelector(state => state.sidebar.user);
     const dispatch = useDispatch();
 
-    console.log("currUser : ", currUser);
+    // console.log("currUser : ", currUser);
 
     // const handleLogout = () => {
     //     localStorage.clear("token");
@@ -50,6 +51,10 @@ export const Header = () => {
         }
 
         localStorage.removeItem("token");
+        // await persistor.purge();
+
+        dispatch(deleteUser());
+        console.log("Delete user from redux");
         navigate("/");
     };
 
@@ -78,7 +83,7 @@ export const Header = () => {
                         <div className='flex items-center text-[#0741a7] ' ><PeopleAltOutlinedIcon /></div>
                         <div>
                             <div>Welcome</div>
-                            <div className='text-[#0741a7] font-medium text-lg'>{currUser.firstName + ' ' + currUser.lastName} <InfoOutlinedIcon /></div>
+                            <div className='text-[#0741a7] font-medium text-lg'>{currUser?.firstName + ' ' + currUser?.lastName} <InfoOutlinedIcon /></div>
                         </div>
                     </div>
                     <div className='w-0.5 h-10 bg-gray-200'></div>

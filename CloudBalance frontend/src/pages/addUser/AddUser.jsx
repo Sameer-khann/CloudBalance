@@ -38,6 +38,8 @@ export const AddUser = ({ buttonText, editData }) => {
                 role: editData.role
             })
 
+            
+
             // console.log("editData.assignedAccounts: ", editData.assignedAccounts)
 
             // if (editData?.role === "Customer") {
@@ -81,8 +83,10 @@ export const AddUser = ({ buttonText, editData }) => {
                     ...userFormData,
                     lastLogin: new Date().toISOString(),
                     active: true,
-                    assignedAccountIds : userFormData.role == "Customer" ? assignedAccounts.map(account => account.id) : []
+                    assignedAccountIds : userFormData.role == "Customer" ? assignedAccounts.map(account => account.accountId) : []
                 }
+
+                console.log("payload: ", payload)
 
                 const res = await axios.put('http://localhost:8080/user', payload,
                     {
@@ -129,7 +133,7 @@ export const AddUser = ({ buttonText, editData }) => {
                     ...userFormData,
                     lastLogin: new Date().toISOString(),
                     active: true,
-                    assignedAccountIds : userFormData.role == "Customer" ? assignedAccounts.map(account => account.id) : []
+                    assignedAccountIds : userFormData.role == "Customer" ? assignedAccounts.map(account => account.accountId) : []
                 }
 
                 const res = await axios.post('http://localhost:8080/user', payload,

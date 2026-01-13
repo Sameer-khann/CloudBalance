@@ -110,10 +110,17 @@ public class CostExplorerService {
                 "SELECT " +
                         "SERVICE, " +
                         "ACCOUNT_ID, " +
+                        "INSTANCE_TYPE, " +
+                        "USAGE_TYPE, " +
                         "REGION, " +
                         "PLATFORM, " +
                         "USAGE_TYPE_GROUP, " +
                         "PURCHASE_OPTION, " +
+                        "API_OPERATION, " +
+                        "RESOURCE, " +
+                        "AVAILABILITY_ZONE, " +
+                        "TENANCY, " +
+                        "LEGAL_ENTITY, " +
                         "BILLING_ENTITY " +
                         "FROM CLOUDBALANCE.PUBLIC.CLOUD_COST_TABLE"
         );
@@ -122,10 +129,17 @@ public class CostExplorerService {
 
         filters.put("service", extractDistinct(df, "SERVICE"));
         filters.put("account", extractDistinct(df, "ACCOUNT_ID"));
+        filters.put("instanceType", extractDistinct(df, "INSTANCE_TYPE"));
+        filters.put("usageType", extractDistinct(df, "USAGE_TYPE"));
         filters.put("region", extractDistinct(df, "REGION"));
         filters.put("platform", extractDistinct(df, "PLATFORM"));
         filters.put("usageGroup", extractDistinct(df, "USAGE_TYPE_GROUP"));
         filters.put("purchaseOption", extractDistinct(df, "PURCHASE_OPTION"));
+        filters.put("apiOperation", extractDistinct(df, "API_OPERATION"));
+        filters.put("resource", extractDistinct(df, "RESOURCE"));
+        filters.put("availabilityZone", extractDistinct(df, "AVAILABILITY_ZONE"));
+        filters.put("tenancy", extractDistinct(df, "TENANCY"));
+        filters.put("legalEntity", extractDistinct(df, "LEGAL_ENTITY"));
         filters.put("billingEntity", extractDistinct(df, "BILLING_ENTITY"));
 
         CostExplorerFilterResponseDto response = new CostExplorerFilterResponseDto();

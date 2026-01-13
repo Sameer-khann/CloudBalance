@@ -23,7 +23,8 @@ export const Sidebar = () => {
 
                 <ul className='py-10 flex flex-col gap-4 pl-4'>
                     <li className='flex flex-row gap-4 hover:bg-[#d1edff] mr-4 p-2 rounded-lg'>
-                        <NavLink to='/dashboard/user'  className={({isActive}) => `flex flex-row gap-4 w-full p-2 rounded-lg ${isActive? 'bg-[#d1edff]' : ''}`}>
+                        <NavLink to='/dashboard/user'  className={({isActive}) => `flex flex-row gap-4 w-full p-2 rounded-lg ${isActive || location.pathname === "/dashboard" ? 'bg-[#d1edff]' : ''}`}>
+                        {/* ${isActive || location.pathname === "/dashboard" ? "bg-[#d1edff]" : ""} */}
                             <div><ManageAccountsOutlinedIcon /></div>
                             <div>Users</div>
                         </NavLink>
@@ -41,9 +42,9 @@ export const Sidebar = () => {
                         </NavLink>
                     </li>
                     <li className='flex flex-row gap-4 hover:bg-[#d1edff] mr-4 p-2 rounded-lg'>
-                        <NavLink to='/'  className={({isActive}) => `flex flex-row gap-4 w-full p-2 rounded-lg ${isActive? 'bg-[#d1edff]' : ''}`}>
+                        <NavLink to='/dashboard/aws'  className={({isActive}) => `flex flex-row gap-4 w-full p-2 rounded-lg ${isActive? 'bg-[#d1edff]' : ''}`}>
                         <div><MemoryOutlinedIcon /></div>
-                        <div>Accounts</div>
+                        <div>AWS Accounts</div>
                         </NavLink>
                     </li>
                 </ul>

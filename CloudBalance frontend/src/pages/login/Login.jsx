@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 
 import logo from '../../assets/cloudbalance.png'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import axios from '../../interceptor/AxiosRequestInterceptor'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { userData } from '../../redux/actions'
 
 export const Login = () => {
@@ -19,6 +19,16 @@ export const Login = () => {
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
+
+    const authToken = useSelector(state => state.sidebar.user)
+
+
+    if(authToken && authToken.token){
+         return <Navigate to='/dashboard' replace/>
+    }
+    
+
+    console.log("Auth Token: ", authToken)
 
 
     const handleLogin = async () => {

@@ -1,2 +1,3 @@
 export const SIDEBAR_TOGGLE = 'SIDEBARTOGGLE'
 export const USER_DATA  = 'USERDATA'
+export const DELETE_USER  = 'DELETEUSER'

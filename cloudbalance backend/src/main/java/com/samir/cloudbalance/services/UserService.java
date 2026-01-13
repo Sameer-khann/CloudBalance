@@ -88,7 +88,7 @@ public class UserService {
 
 //        List<UserEntity> users = userRepo.findByEmailOrderByIdDesc(userRequestDto.getEmail());
 
-        System.out.println("this is ");
+        System.out.println("this is " + userRequestDto);
 
         existingUserEntity.setFirstName(userRequestDto.getFirstName());
         existingUserEntity.setLastName(userRequestDto.getLastName());
