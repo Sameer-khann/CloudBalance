@@ -7,12 +7,14 @@ import com.samir.cloudbalance.model.AccountEntity;
 import com.samir.cloudbalance.model.UserEntity;
 import com.samir.cloudbalance.repository.AccountRepository;
 import com.samir.cloudbalance.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class AccountService {
 
@@ -44,7 +46,7 @@ public class AccountService {
         accountRepo.save(accountEntity);
 
         AccountResponseDto responseDTO = new AccountResponseDto();
-        responseDTO.setAccountID(accountEntity.getAccountId());
+        responseDTO.setAccountId(accountEntity.getAccountId());
         responseDTO.setAccountName(accountEntity.getAccountName());
         responseDTO.setArnNumber(accountEntity.getArnNumber());
 
@@ -63,7 +65,7 @@ public class AccountService {
                 .stream()
                 .map(account -> {
                     AccountInfoDto dto = new AccountInfoDto();
-                    dto.setAccountId(account.getId());
+                    dto.setAccountId(account.getAccountId());
                     dto.setAccountName(account.getAccountName());
                     dto.setArnNumber(account.getArnNumber());
                     return dto;
@@ -94,7 +96,7 @@ public class AccountService {
         return user.getAssignedAccounts().stream().map(
                 account -> {
                     AccountInfoDto dto = new AccountInfoDto();
-                    dto.setAccountId(account.getId());
+                    dto.setAccountId(account.getAccountId());
                     dto.setAccountName(account.getAccountName());
                     dto.setArnNumber(account.getArnNumber());
                     return dto;

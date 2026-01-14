@@ -3,11 +3,13 @@ package com.samir.cloudbalance.services;
 import com.samir.cloudbalance.controller.AuthController;
 import com.samir.cloudbalance.dto.LoginRequestDto;
 import com.samir.cloudbalance.dto.LoginResponseDto;
+import com.samir.cloudbalance.exception.ResourceNotFoundException;
 import com.samir.cloudbalance.model.BlacklistedTokenEntity;
 import com.samir.cloudbalance.model.UserEntity;
 import com.samir.cloudbalance.repository.BlacklistedTokenRepository;
 import com.samir.cloudbalance.repository.UserRepository;
 import com.samir.cloudbalance.security.JwtUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class AuthService {
 
@@ -35,12 +38,12 @@ public class AuthService {
         UserEntity validUser = userRepo.findByEmail(loginRequest.getEmail());
 
         if(validUser == null){
-            throw new RuntimeException("User not found");
+            throw new ResourceNotFoundException("User not found");
         }
 
         //Order matter krta hai
         if(!passwordEncoder.matches(loginRequest.getPassword(), validUser.getPassword())){
-            throw new RuntimeException("Invalid password");
+            throw new ResourceNotFoundException("Invalid email or password.");
         }
 
         String token = jwtUtil.generateToken(validUser.getEmail(), validUser.getRole().name());
@@ -49,7 +52,7 @@ public class AuthService {
             validUser.getId(),
             validUser.getFirstName(),
             validUser.getLastName(),
-            validUser.getEmail(),
+//            validUser.getEmail(),
             validUser.getRole(),
                 token
         );

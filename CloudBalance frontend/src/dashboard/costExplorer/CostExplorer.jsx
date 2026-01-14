@@ -7,6 +7,8 @@ import { useOutletContext } from "react-router-dom";
 
 import axios from "../../interceptor/AxiosRequestInterceptor";
 
+import { InlineLoader } from '../../components/barLoader/BarLoader.jsx';
+
 
 ReactFC.fcRoot(FusionCharts, Column2D, FusionTheme);
 
@@ -330,10 +332,10 @@ const FilterSidebar = ({ isOpen, onClose, appliedFilters, onApplyFilters, onRese
         0
     );
 
-    if (!isOpen) return null;
+    // if (!isOpen) return null;
 
     return (
-        <div className="fixed right-0 top-0 h-full w-96 bg-white shadow-2xl z-50 flex flex-col border-l border-gray-200">
+        <div className={`fixed right-0 top-42 h-[100vh - 1px] w-96 bg-white z-50 flex flex-col border-l border-gray-200 transform transition-transform duration-500 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
 
             <div className="p-6 border-b border-gray-200 bg-white">
                 <div className="flex items-center justify-between mb-2">
@@ -562,6 +564,9 @@ export const CostExplorer = () => {
 
     const [tableData, setTableData] = useState([]);
 
+    const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
+
+
 
     // const initialFilters = {};
     // FILTER_OPTIONS.forEach(filter => {
@@ -576,6 +581,7 @@ export const CostExplorer = () => {
     });
 
     const [appliedFilters, setAppliedFilters] = useState(initialFilters);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleFilterOrder = (selectedId) => {
         setSelectedGroupBy(selectedId);
@@ -630,7 +636,7 @@ export const CostExplorer = () => {
             });
 
             setFilterOptions(dynamicFilters);
-            setAppliedFilters(emptyFilters); // ✅ SAFE
+            setAppliedFilters(emptyFilters);
         };
 
         fetchFilters();
@@ -671,37 +677,84 @@ export const CostExplorer = () => {
     };
 
 
+    // useEffect(() => {
+    //     const fetchCostData = async () => {
+
+    //         setIsLoading(true);
+
+    //         const payload = {
+    //             startDate: "2025-07-01",
+    //             endDate: "2025-12-31",
+    //             groupBy: selectedGroupBy.toUpperCase(),
+    //             service: appliedFilters.service || [],
+    //             accountId: appliedFilters.account || [],
+    //             region: appliedFilters.region || [],
+    //             platform: appliedFilters.platform || [],
+    //             usageTypeGroup: appliedFilters.usageGroup || [],
+    //             purchaseOption: appliedFilters.purchaseOption || [],
+    //             billingEntity: appliedFilters.billingEntity || []
+    //         };
+
+    //         const res = await axios.post("/api/cost-explorer", payload);
+    //         console.log("Response of Cost API : ", res);
+
+    //         const mapped = res.data.map(item => ({
+    //             service: item.groupKey,
+    //             jul2025: item.monthlyCost.M7 || 0,
+    //             aug2025: item.monthlyCost.M8 || 0,
+    //             sep2025: item.monthlyCost.M9 || 0,
+    //             oct2025: item.monthlyCost.M10 || 0,
+    //             nov2025: item.monthlyCost.M11 || 0,
+    //             dec2025: item.monthlyCost.M12 || 0
+    //         }));
+
+    //         console.log("Mapped data at frontend: ", mapped);
+
+    //         setTableData(mapped);
+    //     };
+
+    //     fetchCostData();
+    // }, [appliedFilters, selectedGroupBy]);
+
     useEffect(() => {
         const fetchCostData = async () => {
-            const payload = {
-                startDate: "2025-07-01",
-                endDate: "2025-12-31",
-                groupBy: selectedGroupBy.toUpperCase(),
-                service: appliedFilters.service || [],
-                accountId: appliedFilters.account || [],
-                region: appliedFilters.region || [],
-                platform: appliedFilters.platform || [],
-                usageTypeGroup: appliedFilters.usageGroup || [],
-                purchaseOption: appliedFilters.purchaseOption || [],
-                billingEntity: appliedFilters.billingEntity || []
-            };
+            if (!hasLoadedOnce) setIsLoading(true);
+            // setIsLoading(true);
+            try {
+                const payload = {
+                    startDate: "2025-07-01",
+                    endDate: "2025-12-31",
+                    groupBy: selectedGroupBy.toUpperCase(),
+                    service: appliedFilters.service || [],
+                    accountId: appliedFilters.account || [],
+                    region: appliedFilters.region || [],
+                    platform: appliedFilters.platform || [],
+                    usageTypeGroup: appliedFilters.usageGroup || [],
+                    purchaseOption: appliedFilters.purchaseOption || [],
+                    billingEntity: appliedFilters.billingEntity || []
+                };
 
-            const res = await axios.post("/api/cost-explorer", payload);
-            console.log("Response of Cost API : ", res);
+                const res = await axios.post("/api/cost-explorer", payload);
+                console.log("Response of Cost API : ", res);
 
-            const mapped = res.data.map(item => ({
-                service: item.groupKey,
-                jul2025: item.monthlyCost.M7 || 0,
-                aug2025: item.monthlyCost.M8 || 0,
-                sep2025: item.monthlyCost.M9 || 0,
-                oct2025: item.monthlyCost.M10 || 0,
-                nov2025: item.monthlyCost.M11 || 0,
-                dec2025: item.monthlyCost.M12 || 0
-            }));
+                const mapped = res.data.map(item => ({
+                    service: item.groupKey,
+                    jul2025: item.monthlyCost.M7 || 0,
+                    aug2025: item.monthlyCost.M8 || 0,
+                    sep2025: item.monthlyCost.M9 || 0,
+                    oct2025: item.monthlyCost.M10 || 0,
+                    nov2025: item.monthlyCost.M11 || 0,
+                    dec2025: item.monthlyCost.M12 || 0
+                }));
 
-            console.log("Mapped data at frontend: ", mapped);
-
-            setTableData(mapped);
+                console.log("Mapped data at frontend: ", mapped);
+                setTableData(mapped);
+            } catch (error) {
+                console.error("Error fetching cost data:", error);
+            } finally {
+                setIsLoading(false);
+                setHasLoadedOnce(true);
+            }
         };
 
         fetchCostData();
@@ -771,7 +824,7 @@ export const CostExplorer = () => {
     );
 
     return (
-        <div className={`transition-all duration-300 ${isFilterOpen ? 'pr-96' : ''}`}>
+        <div className={`transition-all duration-500 ${isFilterOpen ? 'pr-96' : ''}`}>
             <div className="p-6 space-y-4 -ml-6">
                 <div>
                     <p className="-mt-3 text-sm text-gray-700">
@@ -830,12 +883,26 @@ export const CostExplorer = () => {
                         </div>
                     </div>
 
-                    <div className="mt-4">
+                    {/* <div className="mt-4">
                         <ReactFC {...chartConfigs} />
-                    </div>
+                    </div> */}
+
+                    {isLoading ? (
+                        <InlineLoader message="Loading cost data from Snowflake..." />
+                    ) : (
+                        <div className="mt-4">
+                            <ReactFC {...chartConfigs} />
+                        </div>
+                    )}
                 </div>
 
-                <CostDataTable data={filteredData} selectedGroupBy={selectedGroupBy} />
+                {/* <CostDataTable data={filteredData} selectedGroupBy={selectedGroupBy} /> */}
+
+                {isLoading ? (
+                    <InlineLoader message="Preparing data table..." />
+                ) : (
+                    <CostDataTable data={filteredData} selectedGroupBy={selectedGroupBy} />
+                )}
             </div>
 
             <FilterSidebar

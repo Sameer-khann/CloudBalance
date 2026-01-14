@@ -2,6 +2,7 @@ package com.samir.cloudbalance.configuration;
 
 import com.samir.cloudbalance.security.JwtAuthFilter;
 import com.samir.cloudbalance.security.JwtUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+@Slf4j
 @EnableMethodSecurity //Spring checks roles/permissions before method execution not in this file
 @Configuration
 public class SecurityConfig {
@@ -65,11 +67,11 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring()
-                .requestMatchers("/logout");
-    }
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return (web) -> web.ignoring()
+//                .requestMatchers("/api/logout");
+//    }
 
 
     @Bean

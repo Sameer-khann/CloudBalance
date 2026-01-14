@@ -4,7 +4,10 @@ import { AccountAssignment } from "../../components/account/AccountAssignment";
 
 
 import { useEffect, useState } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { Navigate, useNavigate, useOutletContext } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+import { toast } from "sonner";
 
 
 export const AddUser = ({ buttonText, editData }) => {
@@ -26,6 +29,8 @@ export const AddUser = ({ buttonText, editData }) => {
 
     const navigate = useNavigate();
 
+
+
     useEffect(() => {
         setPageTitle('Add New User');
 
@@ -38,12 +43,12 @@ export const AddUser = ({ buttonText, editData }) => {
                 role: editData.role
             })
 
-            
+
 
             // console.log("editData.assignedAccounts: ", editData.assignedAccounts)
 
             // if (editData?.role === "Customer") {
-                setAssignedAccounts(editData.assignedAccounts || []);
+            setAssignedAccounts(editData.assignedAccounts || []);
             // }
         }
 
@@ -55,6 +60,14 @@ export const AddUser = ({ buttonText, editData }) => {
     //     useEffect(() => {
 
     // }, [editData]);
+
+    const reduxUser = useSelector(state => state.sidebar.user);
+
+    // const isReadOnly = reduxUser.role == "ReadOnly" ? true : false;
+
+    if (reduxUser.role != 'Admin') {
+        return <Navigate to='/dashboard' />
+    }
 
 
     const handleInput = (e) => {
@@ -70,7 +83,7 @@ export const AddUser = ({ buttonText, editData }) => {
         e.preventDefault();
 
         if (!userFormData.role) {
-            alert("Please choose a role.")
+            toast.warning("Please choose a role.")
             return;
         }
 
@@ -83,7 +96,7 @@ export const AddUser = ({ buttonText, editData }) => {
                     ...userFormData,
                     lastLogin: new Date().toISOString(),
                     active: true,
-                    assignedAccountIds : userFormData.role == "Customer" ? assignedAccounts.map(account => account.accountId) : []
+                    assignedAccountIds: userFormData.role == "Customer" ? assignedAccounts.map(account => account.accountId) : []
                 }
 
                 console.log("payload: ", payload)
@@ -97,7 +110,7 @@ export const AddUser = ({ buttonText, editData }) => {
                 )
 
                 if (res.status == 200 || res.status == 201) {
-                    alert("User Updated successfully")
+                    toast.success("User Updated successfully")
 
                     // if (userFormData.role === "Customer") {
                     //     await axios.post("http://localhost:8080/assign", {
@@ -120,7 +133,7 @@ export const AddUser = ({ buttonText, editData }) => {
             catch (err) {
                 console.log("Error : ", err?.response?.data?.message)
                 // alert("User is not updated.")
-                alert(err?.response?.data?.message)
+                toast.error(err?.response?.data?.message)
             }
 
         }
@@ -133,7 +146,7 @@ export const AddUser = ({ buttonText, editData }) => {
                     ...userFormData,
                     lastLogin: new Date().toISOString(),
                     active: true,
-                    assignedAccountIds : userFormData.role == "Customer" ? assignedAccounts.map(account => account.accountId) : []
+                    assignedAccountIds: userFormData.role == "Customer" ? assignedAccounts.map(account => account.accountId) : []
                 }
 
                 const res = await axios.post('http://localhost:8080/user', payload,
@@ -145,7 +158,7 @@ export const AddUser = ({ buttonText, editData }) => {
                 )
 
                 if (res.status == 200 || res.status == 201) {
-                    alert("User created successfully")
+                    toast.success("User created successfully")
 
                     // if (userFormData.role === "Customer" && assignedAccounts.length > 0) {
                     //     await axios.post("http://localhost:8080/assign", {
@@ -178,7 +191,7 @@ export const AddUser = ({ buttonText, editData }) => {
             catch (err) {
                 console.log("Error : ", err?.response?.data?.message || "Something went wrong")
                 // alert("User is not created.")
-                alert(err?.response?.data?.message)
+                toast.error(err?.response?.data?.message)
             }
         }
 

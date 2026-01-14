@@ -79,11 +79,15 @@ export const AccountAssignment = ({ selectedAccounts, setSelectedAccounts }) => 
     // }, []);
 
     const assignAccount = (account) => {
+        console.log("assignAccount called")
+        console.log("SelectedAccounts before setting assignAccount: ", selectedAccounts)
         setSelectedAccounts(prev => [...prev, account]);
         setAvailableAccounts(prev => prev.filter(a => a.accountId !== account.accountId));
+        console.log("SelectedAccounts before setting assignAccount: ", selectedAccounts)
     };
 
     const unAssignAccount = (account) => {
+        console.log("unAssignAccount called")
         setAvailableAccounts(prev => [...prev, account]);
         setSelectedAccounts(prev => prev.filter(a => a.accountId !== account.accountId));
     };

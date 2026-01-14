@@ -1,15 +1,17 @@
 package com.samir.cloudbalance.services;
 
 import com.samir.cloudbalance.dto.CostExplorerFilterResponseDto;
-import com.samir.cloudbalance.dto.request.CostExplorerRequestDto;
-import com.samir.cloudbalance.dto.response.CostExplorerResponseDto;
+import com.samir.cloudbalance.dto.CostExplorerRequestDto;
+import com.samir.cloudbalance.dto.CostExplorerResponseDto;
 import com.snowflake.snowpark.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 import static com.snowflake.snowpark.functions.*;
 
+@Slf4j
 @Service
 public class CostExplorerService {
 
@@ -31,6 +33,10 @@ public class CostExplorerService {
     public List<CostExplorerResponseDto> fetchCostData(CostExplorerRequestDto req) {
 
         System.out.println("fetchCostData req : " + req);
+
+        if (req.getStartDate().isAfter(req.getEndDate())) {
+            throw new IllegalArgumentException("Start date cannot be after end date");
+        }
 
     DataFrame df = session.sql("select * from CLOUDBALANCE.PUBLIC.CLOUD_COST_TABLE");
 

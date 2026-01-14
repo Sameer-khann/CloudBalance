@@ -1,7 +1,7 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { Navigate, useNavigate, useOutletContext } from 'react-router-dom';
 import { ChevronRight, Copy, Info } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -14,8 +14,11 @@ import onboadingImg3b from "../../assets/Onboarding3b.png"
 import onboadingImg3c from "../../assets/Onboarding3c.png"
 // import axios from '../../interceptor/AxiosRequestInterceptor';
 import axiosInstance from '../../interceptor/AxiosRequestInterceptor';
+import { useSelector } from 'react-redux';
 
 const Onboarding = () => {
+
+    
     const navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState({
@@ -24,9 +27,10 @@ const Onboarding = () => {
         accountName: '',
         // roleName: 'CK-Tuner-Role-dev2'
     });
-
+    
+    
     const validData = !!(formData.arnNumber && formData.accountId && formData.accountName);
-
+    
     // console.log("validData : ", validData)
     console.log({
         arnNumber: formData.arnNumber,
@@ -45,10 +49,16 @@ const Onboarding = () => {
 
     useEffect(() => {
         setPageTitle("");
-
+        
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+    
+    const reduxUser = useSelector(state => state.sidebar.user)
 
+    if(reduxUser.role == 'Customer' || reduxUser.role == 'ReadOnly'){
+        return <Navigate to='/dashboard/costexplorer' />
+    }
+    
     const steps = [
         { id: 1, name: 'Create an IAM Role', label: 'A. Create an IAM Role' },
         { id: 2, name: 'Add Customer Managed Policies', label: 'B. Add Customer Managed Policies' },

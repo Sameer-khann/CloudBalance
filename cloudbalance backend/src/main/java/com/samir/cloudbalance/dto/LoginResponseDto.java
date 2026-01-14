@@ -11,7 +11,7 @@ public class LoginResponseDto {
     public Long id;
     public String firstName;
     public String lastName;
-    public String email;
+//    public String email;
     public UserRole role;
     public String token;
 }

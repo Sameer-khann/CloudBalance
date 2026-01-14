@@ -12,7 +12,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class UserRequestDto {
+public class UserUpdateRequestDto {
 
     private Long id;
 
@@ -31,12 +31,12 @@ public class UserRequestDto {
     @NotNull(message = "Role is required")
     private UserRole role;
 
-    @NotBlank(message = "Password is required")
-    @Size(min = 8, message = "Password must be at least 8 characters")
-    private String password;
-
-    @NotNull(message = "Active status is required")
-    private Boolean active;
+//    @NotBlank(message = "Password is required")
+//    @Size(min = 8, message = "Password must be at least 8 characters")
+//    private String password;
+//
+//    @NotNull(message = "Active status is required")
+//    private Boolean active;
 
     private List<Long> assignedAccountIds;
 }

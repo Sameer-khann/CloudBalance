@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 
+import { toast } from 'sonner'
+
 import logo from '../../assets/cloudbalance.png'
 import { Navigate, useNavigate } from 'react-router-dom'
 import axios from '../../interceptor/AxiosRequestInterceptor'
@@ -16,6 +18,8 @@ export const Login = () => {
 
     const [loading, setLoading] = useState(false);
 
+    const [showPassword, setShowPassword] = useState(false);
+
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
@@ -23,10 +27,16 @@ export const Login = () => {
     const authToken = useSelector(state => state.sidebar.user)
 
 
-    if(authToken && authToken.token){
-         return <Navigate to='/dashboard' replace/>
+    if (authToken && authToken.token) {
+
+        if (authToken.role != 'Customer') {
+            return <Navigate to='/dashboard' replace />
+        }
+        else {
+            return <Navigate to='/dashboard/costexplorer' replace />
+        }
     }
-    
+
 
     console.log("Auth Token: ", authToken)
 
@@ -35,12 +45,15 @@ export const Login = () => {
 
         if (loading) return;
 
+        if (!email || !password) {
+            setEmptyEmail(!email);
+            setEmptyPassword(!password);
+            return;
+        }
+
         setLoading(true);
 
-        if (!email) setEmptyEmail(true);
-        if (!password) setEmptyPassword(true);
-
-        if (!email || !password) return;
+        // if (!email || !password) return;
 
         const loginCredentials = {
             email: email,
@@ -53,10 +66,16 @@ export const Login = () => {
             })
 
             // if (res.status == 200) {
-                // localStorage.setItem("Islogin", "true");
-                localStorage.setItem("token", res.data.token);
+            // localStorage.setItem("Islogin", "true");
+            localStorage.setItem("token", res.data.token);
+            console.log("Role: ", res.data.role);
+            if (res.data.role != 'Customer') {
                 navigate('/dashboard')
-                dispatch(userData(res.data))
+            }
+            else {
+                navigate('/dashboard/costexplorer')
+            }
+            dispatch(userData(res.data))
             // }
             // else {
             //     setEmptyName(true)
@@ -65,7 +84,7 @@ export const Login = () => {
             setLoading(false);
         }
         catch (err) {
-            alert(err?.response?.data?.message || "Login Failed");
+            toast.error(err?.response?.data?.message || "Login Failed");
             setLoading(false);
         }
 
@@ -113,18 +132,43 @@ export const Login = () => {
                         </div>
 
 
-                        <div className=''>
+                        <div className='relative'>
                             <label className='text-left text-[14px] text-[#333]' htmlFor="password">Password</label>
                             <br />
-                            <input onChange={(e) => setPassword(e.target.value)} className='border border-[#DBDBDB] w-[471px] h-[43px] mt-3.5 rounded-sm px-3 placeholder:text-[#DBDBDB]' id='password' type='password' placeholder='Password' />
+                            {/* <input onChange={(e) => setPassword(e.target.value)} className='border border-[#DBDBDB] w-[471px] h-[43px] mt-3.5 rounded-sm px-3 placeholder:text-[#DBDBDB]' id='password' type='password' placeholder='Password' /> */}
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="border border-[#DBDBDB] w-[471px] h-[43px] mt-3.5 rounded-sm px-3"
+                            />
+
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(p => !p)}
+                                className="text-sm text-blue-600 mt-1 absolute bottom-3 right-3"
+                            >
+                                {showPassword ? "Hide" : "Show"}
+                            </button>
+
+
+
 
                             {emptyPassword &&
                                 <p className="text-red-500 text-sm mt-1">This field is required</p>
                             }
                         </div>
-                        {/* <a className='text-right text-[#4398d7] font-medium text-xs w-[471px] pt-5' href="">Forgot Password?</a> */}
 
-                        <button type='submit' onClick={handleLogin} className='bg-[#4398d7] text-white text-base w-[471px] h-[43px] rounded-sm mt-8 hover:shadow-lg hover:shadow-[#4398d7]/40 transition-all duration-300' >LOGIN</button>
+                        {/* <button type='submit' onClick={handleLogin} className='bg-[#4398d7] text-white text-base w-[471px] h-[43px] rounded-sm mt-8 hover:shadow-lg hover:shadow-[#4398d7]/40 transition-all duration-300' >LOGIN</button> */}
+
+                        <button
+                            type="button"
+                            onClick={handleLogin}
+                            disabled={loading}
+                            className={`
+                                  bg-[#4398d7] text-white text-base w-[471px] h-[43px] rounded-sm mt-8 transition-all duration-300 ${loading ? "opacity-60 cursor-not-allowed" : "hover:shadow-lg hover:shadow-[#4398d7]/40"}`}>
+                            {loading ? "Logging in..." : "LOGIN"}
+                        </button>
+
 
                     </div>
 

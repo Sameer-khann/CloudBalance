@@ -1,15 +1,18 @@
 package com.samir.cloudbalance.controller;
 
 import com.samir.cloudbalance.dto.CostExplorerFilterResponseDto;
-import com.samir.cloudbalance.dto.request.CostExplorerRequestDto;
-import com.samir.cloudbalance.dto.response.CostExplorerResponseDto;
+import com.samir.cloudbalance.dto.CostExplorerRequestDto;
+import com.samir.cloudbalance.dto.CostExplorerResponseDto;
 import com.samir.cloudbalance.services.CostExplorerService;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/cost-explorer")
 public class CostExplorerController {
@@ -29,7 +32,7 @@ public class CostExplorerController {
     @PreAuthorize("hasRole('Admin')")
     @PostMapping
     public List<CostExplorerResponseDto> getCostData(
-            @RequestBody CostExplorerRequestDto request
+           @Valid @RequestBody CostExplorerRequestDto request
     ) {
         return service.fetchCostData(request);
     }

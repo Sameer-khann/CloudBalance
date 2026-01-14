@@ -54,6 +54,8 @@ dependencies {
     implementation("com.snowflake:snowpark_2.13:1.18.0"){
         exclude group: 'org.slf4j',module: 'slf4j-simple'
     }
+
+    implementation("org.springframework.boot:spring-boot-starter-validation:4.0.0")
 }
 
 tasks.named('test') {

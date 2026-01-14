@@ -1,4 +1,4 @@
-package com.samir.cloudbalance.dto.response;
+package com.samir.cloudbalance.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

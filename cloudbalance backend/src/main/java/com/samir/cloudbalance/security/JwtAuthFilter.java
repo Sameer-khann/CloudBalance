@@ -22,14 +22,20 @@ import java.util.List;
 public class JwtAuthFilter extends OncePerRequestFilter {
 //    OncePerRequestFilter for JWTAuthentication filter , Prevents duplicate auth
 
-    @Autowired
-    public JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
-    @Autowired
-    public BlacklistedTokenRepository blacklistedTokenRepo;
+    private final BlacklistedTokenRepository blacklistedTokenRepo;
 
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
+
+
+    public JwtAuthFilter(JwtUtil jwtUtil,
+                         BlacklistedTokenRepository blacklistedTokenRepo,
+                         CustomUserDetailsService userDetailsService) {
+        this.jwtUtil = jwtUtil;
+        this.blacklistedTokenRepo = blacklistedTokenRepo;
+        this.userDetailsService = userDetailsService;
+    }
 
 
     @Override
@@ -39,10 +45,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException{
 
-//        if (request.getServletPath().equals("/logout")) { //Logout should work even if token is expiring
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
+        if (request.getServletPath().equals("/logout")) { //Logout should work even if token is expiring
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         String header = request.getHeader("Authorization");
 
@@ -56,8 +62,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
-
-
 
             if (jwtUtil.validateToken(token) &&
                     SecurityContextHolder.getContext().getAuthentication() == null) {

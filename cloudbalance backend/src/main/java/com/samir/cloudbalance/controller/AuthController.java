@@ -7,6 +7,8 @@ import com.samir.cloudbalance.model.UserEntity;
 import com.samir.cloudbalance.repository.BlacklistedTokenRepository;
 import com.samir.cloudbalance.services.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 //@RequestMapping
 public class AuthController {
@@ -29,7 +32,7 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDto request) {
+    public ResponseEntity<?> login( @Valid @RequestBody LoginRequestDto request) {
 
         System.out.println(request);
         LoginResponseDto response = authService.login(request);

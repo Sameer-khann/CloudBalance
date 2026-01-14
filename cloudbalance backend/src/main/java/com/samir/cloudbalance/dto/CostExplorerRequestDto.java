@@ -1,15 +1,24 @@
-package com.samir.cloudbalance.dto.request;
+package com.samir.cloudbalance.dto;
 
 import lombok.Data;
 import java.time.LocalDate;
 import java.util.List;
+import jakarta.validation.constraints.*;
 
 @Data
 public class CostExplorerRequestDto {
 
+    @NotNull(message = "Start date is required")
     private LocalDate startDate;
+
+    @NotNull(message = "End date is required")
     private LocalDate endDate;
 
+    @NotBlank(message = "Group by field is required")
+    @Pattern(
+            regexp = "SERVICE|ACCOUNT_ID|REGION|USAGE_TYPE|PLATFORM",
+            message = "Invalid groupBy value"
+    )
     private String groupBy;
 
     private List<String> service;

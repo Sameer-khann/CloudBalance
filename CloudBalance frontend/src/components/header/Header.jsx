@@ -66,7 +66,7 @@ export const Header = () => {
     return (
         <>
 
-            <div className=" w-screen flex items-center justify-between px-6 shadow-lg z-100">
+            <div className="sticky top-0 w-screen flex items-center justify-between px-6 shadow-lg z-100">
                 <div className="flex flex-row items-center gap-7 " >
                     <img className='h-14 my-2 pb-2' src={logo} alt="logo img" />
                     <div onClick={() => dispatch(sidebarToggle())} className='text-[#4398d7]' ><MenuIcon /></div>

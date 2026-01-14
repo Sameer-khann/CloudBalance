@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+/* Tailwind base / reset */
+/* @import "tailwindcss/preflight"; */
+
+/* Tailwind utilities */
+/* @tailwind utilities; */
+
