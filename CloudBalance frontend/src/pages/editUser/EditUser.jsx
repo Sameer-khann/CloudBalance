@@ -16,12 +16,6 @@ export const EditUser = () => {
     useEffect(() => {
         setPageTitle("Edit User")
 
-        // const getUserData = async () =>{
-        //     try{
-        //         const res = await axios("http://localhost:8080/user/userdata")
-        //     }
-        // }
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

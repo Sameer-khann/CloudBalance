@@ -38,7 +38,6 @@ const GROUP_BY_OPTIONS = [
     { id: "BILLING_ENTITY", label: "Billing Entity" }
 ];
 
-// Filter Configuration - Define all available filters
 const FILTER_OPTIONS = [
     {
         id: "service",
@@ -359,7 +358,6 @@ const FilterSidebar = ({ isOpen, onClose, appliedFilters, onApplyFilters, onRese
                 <p className="text-sm text-gray-600">Filter your cost data by multiple dimensions</p>
             </div>
 
-            {/* Filter List */}
             <div className="flex-1 overflow-y-auto">
                 {filterOptions.map((filter) => (
                     <FilterDropdown
@@ -373,7 +371,6 @@ const FilterSidebar = ({ isOpen, onClose, appliedFilters, onApplyFilters, onRese
                 ))}
             </div>
 
-            {/* Footer Actions */}
             <div className="p-4 border-t border-gray-200 bg-white space-y-2">
                 <button
                     onClick={handleApply}
@@ -455,7 +452,7 @@ const CostDataTable = ({ data, selectedGroupBy }) => {
                 <table className="w-full">
                     <thead className="bg-gray-50 border-b border-gray-200">
                         <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider sticky left-0 bg-gray-50 z-10">
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider sticky left-0 bg-gray-50">
                                 {selectedGroupBy}
                             </th>
                             <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
@@ -650,12 +647,10 @@ export const CostExplorer = () => {
         setPageTitle("Cost Explorer");
     }, [setPageTitle]);
 
-    // Apply filters to data
     const getFilteredData = () => {
 
         let filteredData = [...tableData];
 
-        // Apply service filter
         if (appliedFilters.service && appliedFilters.service.length > 0) {
             filteredData = filteredData.filter(row =>
                 appliedFilters.service.includes(row.service)
@@ -670,8 +665,7 @@ export const CostExplorer = () => {
             (a, b) => calculateTotal(b) - calculateTotal(a)
         )
 
-        // Add more filter logic here when you have actual data with these fields
-        // For now, we're only filtering by service since that's the only field in TABLE_DATA
+        // Add heremore future filter logic 
 
         return filteredData;
     };

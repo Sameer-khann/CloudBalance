@@ -46,7 +46,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                                .requestMatchers("/login", "/api/logout").permitAll()
+                                .requestMatchers("/login", "/api/logout", "/error").permitAll()
 //                                .requestMatchers("/api/cost-explorer/filters").permitAll()
 //                                .requestMatchers("/adduser", "/edituser").hasRole("Admin")
 //                                .requestMatchers("/edituser").hasRole("Admin")

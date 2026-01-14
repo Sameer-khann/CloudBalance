@@ -16,7 +16,7 @@ public class CostExplorerRequestDto {
 
     @NotBlank(message = "Group by field is required")
     @Pattern(
-            regexp = "SERVICE|ACCOUNT_ID|REGION|USAGE_TYPE|PLATFORM",
+            regexp = "SERVICE|ACCOUNT_ID|INSTANCE_TYPE|REGION|USAGE_TYPE|PLATFORM|USAGE_TYPE_GROUP|PURCHASE_OPTION|API_OPERATION|RESOURCE|AVAILABILITY_ZONE|TENANCY|LEGAL_ENTITY|BILLING_ENTITY",
             message = "Invalid groupBy value"
     )
     private String groupBy;

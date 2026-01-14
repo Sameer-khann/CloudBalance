@@ -13,7 +13,6 @@ import NotFound from './pages/notFound/NotFound'
 import { AwsAccounts } from './dashboard/awsAccounts/AwsAccounts'
 
 function App() {
-  // const [count, setCount] = useState(0)
 
   return (
     <>

@@ -1,6 +1,7 @@
 package com.samir.cloudbalance.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -15,9 +16,15 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // ==========================
-    // 1️⃣ Validation Errors
-    // ==========================
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiErrorResponse> handleIllegalArg(
+            IllegalArgumentException ex,
+            HttpServletRequest request) {
+
+        return buildError(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
+    }
+
+//       Validation Errors
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiErrorResponse> handleValidationException(
             MethodArgumentNotValidException ex,
@@ -39,9 +46,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(response);
     }
 
-    // ==========================
-    // 2️⃣ Resource Not Found
-    // ==========================
+    // Resource Not Found
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleNotFound(
             ResourceNotFoundException ex,
@@ -50,9 +55,7 @@ public class GlobalExceptionHandler {
         return buildError(HttpStatus.NOT_FOUND, ex.getMessage(), request);
     }
 
-    // ==========================
-    // 3️⃣ Business Errors
-    // ==========================
+    // Business Errors
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ApiErrorResponse> handleBusiness(
             BusinessException ex,
@@ -61,9 +64,7 @@ public class GlobalExceptionHandler {
         return buildError(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
     }
 
-    // ==========================
-    // 4️⃣ Security / Authorization
-    // ==========================
+    // Security / Authorization
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ApiErrorResponse> handleAccessDenied(
             AccessDeniedException ex,
@@ -72,9 +73,7 @@ public class GlobalExceptionHandler {
         return buildError(HttpStatus.FORBIDDEN, "Access denied", request);
     }
 
-    // ==========================
-    // 5️⃣ Unauthorized
-    // ==========================
+    // Unauthorized
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ApiErrorResponse> handleUnauthorized(
             UnauthorizedException ex,
@@ -83,9 +82,7 @@ public class GlobalExceptionHandler {
         return buildError(HttpStatus.UNAUTHORIZED, ex.getMessage(), request);
     }
 
-    // ==========================
-    // 6️⃣ Fallback (ALL others)
-    // ==========================
+    // Fallback (ALL others)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorResponse> handleGeneric(
             Exception ex,
@@ -98,9 +95,16 @@ public class GlobalExceptionHandler {
         );
     }
 
-    // ==========================
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiErrorResponse> handleDataConflict(
+            Exception ex,
+            HttpServletRequest request) {
+
+        return buildError(HttpStatus.CONFLICT, "Data conflict", request);
+    }
+
+
     // Helper
-    // ==========================
     private ResponseEntity<ApiErrorResponse> buildError(
             HttpStatus status,
             String message,

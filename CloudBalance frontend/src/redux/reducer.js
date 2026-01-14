@@ -26,16 +26,4 @@ export const toggleReducer = (state = initialValues, action) => {
         default:
             return state;
     }
-
-    // if (action.type == SIDEBAR_TOGGLE) {
-    //     return {
-    //         ...state,
-    //         open: !state.open
-    //     }
-    // }
-    // else {
-    //     return state
-    // }
 }
-
-// export const userReducer = (state = )

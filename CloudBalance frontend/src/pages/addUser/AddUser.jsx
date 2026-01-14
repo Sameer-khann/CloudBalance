@@ -12,14 +12,12 @@ import { toast } from "sonner";
 
 export const AddUser = ({ buttonText, editData }) => {
 
-    // console.log("Editdata ID : ", editData.id);
 
     const [userFormData, setUserFormData] = useState({
         firstName: '',
         lastName: '',
         email: '',
         role: '',
-        // userName: '',
         password: '',
     });
     const [assignedAccounts, setAssignedAccounts] = useState([]);
@@ -35,7 +33,6 @@ export const AddUser = ({ buttonText, editData }) => {
         setPageTitle('Add New User');
 
         if (editData) {
-            // console.log("EditData: ", editData)
             setUserFormData({
                 firstName: editData.firstName,
                 lastName: editData.lastName,
@@ -43,13 +40,8 @@ export const AddUser = ({ buttonText, editData }) => {
                 role: editData.role
             })
 
-
-
-            // console.log("editData.assignedAccounts: ", editData.assignedAccounts)
-
-            // if (editData?.role === "Customer") {
             setAssignedAccounts(editData.assignedAccounts || []);
-            // }
+            
         }
 
 
@@ -57,13 +49,9 @@ export const AddUser = ({ buttonText, editData }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [editData]);
 
-    //     useEffect(() => {
-
-    // }, [editData]);
 
     const reduxUser = useSelector(state => state.sidebar.user);
 
-    // const isReadOnly = reduxUser.role == "ReadOnly" ? true : false;
 
     if (reduxUser.role != 'Admin') {
         return <Navigate to='/dashboard' />
@@ -132,7 +120,6 @@ export const AddUser = ({ buttonText, editData }) => {
             }
             catch (err) {
                 console.log("Error : ", err?.response?.data?.message)
-                // alert("User is not updated.")
                 toast.error(err?.response?.data?.message)
             }
 
@@ -160,37 +147,22 @@ export const AddUser = ({ buttonText, editData }) => {
                 if (res.status == 200 || res.status == 201) {
                     toast.success("User created successfully")
 
-                    // if (userFormData.role === "Customer" && assignedAccounts.length > 0) {
-                    //     await axios.post("http://localhost:8080/assign", {
-                    //         userId: res.data.id,
-                    //         accountsIds: assignedAccounts.map(acc => acc.id)
-                    //     }, {
-                    //         headers: {
-                    //             "Content-type": "application/json",
-                    //         }
-                    //     });
-                    //     alert("Accounts are assigning")
-                    // }
 
                     setUserFormData({
                         firstName: '',
                         lastName: '',
                         email: '',
                         role: '',
-                        // userName: '',
                         password: '',
                     })
 
 
                 }
-                // else{
-                //     alert("200 is not getting")
-                // }
+                
                 navigate('/dashboard/user');
             }
             catch (err) {
                 console.log("Error : ", err?.response?.data?.message || "Something went wrong")
-                // alert("User is not created.")
                 toast.error(err?.response?.data?.message)
             }
         }
@@ -230,7 +202,7 @@ export const AddUser = ({ buttonText, editData }) => {
                                 <option value='' disabled hidden className="text-gray-400">Select Roles</option>
                                 <option value='Admin' className="text-black">Admin</option>
                                 <option value='Customer' className="text-black">Customer</option>
-                                <option value='Read-Only' className="text-black">Read Only</option>
+                                <option value='ReadOnly' className="text-black">Read Only</option>
                             </select>
                         </div>
 

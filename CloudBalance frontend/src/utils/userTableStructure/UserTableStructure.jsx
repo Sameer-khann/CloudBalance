@@ -61,7 +61,6 @@ export const userTableStructure = (onEditClick, handleDeleteUser, isReadOnly) =>
         colName: "delete",
         render: (_, row) => (
           <button
-            // onClick={() => console.log("DELETE:", row)}
             onClick={() => handleDeleteUser(row)}
           >
             <DeleteIcon className="text-blue-800 cursor-pointer" />
@@ -74,20 +73,3 @@ export const userTableStructure = (onEditClick, handleDeleteUser, isReadOnly) =>
 
   return column;
 }
-
-
-
-// [
-
-
-//   // {
-//   //   header: "Active",
-//   //   colName: "active",
-//   //   render: (value, row) => (
-//   //     <Switch defaultChecked={value} onChange={() => console.log(row)} />
-//   //   ),
-//   // },
-
-//   if (!isR)
-  
-// ];

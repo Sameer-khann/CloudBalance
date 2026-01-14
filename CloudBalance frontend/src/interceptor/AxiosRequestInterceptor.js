@@ -1,5 +1,7 @@
 import axios from "axios";
 
+import {toast} from "sonner";
+
 const axiosInstance = axios.create({
   baseURL: "http://localhost:8080",
 });
@@ -13,3 +15,29 @@ axiosInstance.interceptors.request.use((config) => {
 });
 
 export default axiosInstance;
+
+
+axiosInstance.interceptors.response.use(
+  (response) => response,
+
+  
+
+  (error) => {
+    if (!error.response) {
+      return Promise.reject(error);
+    }
+
+    const { status } = error.response;
+
+    if (status === 401) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+
+      toast.success("User not found.")
+
+      window.location.href = "/";
+    }
+
+    return Promise.reject(error);
+  }
+);

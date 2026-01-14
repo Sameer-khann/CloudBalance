@@ -3,10 +3,12 @@ package com.samir.cloudbalance.services;
 import com.samir.cloudbalance.dto.CostExplorerFilterResponseDto;
 import com.samir.cloudbalance.dto.CostExplorerRequestDto;
 import com.samir.cloudbalance.dto.CostExplorerResponseDto;
+import com.samir.cloudbalance.exception.BusinessException;
 import com.snowflake.snowpark.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 import static com.snowflake.snowpark.functions.*;
@@ -21,80 +23,90 @@ public class CostExplorerService {
         this.session = session;
     }
 
-    public void getalldata(){
+    public void getalldata() {
         DataFrame df = session.sql("select * from CLOUDBALANCE.PUBLIC.CLOUD_COST_TABLE");
         Row[] rows = df.collect();
-        for(Row row:rows){
-            System.out.println(row
-            );
+        for (Row row : rows) {
+            log.info("row: " + row);
         }
     }
 
     public List<CostExplorerResponseDto> fetchCostData(CostExplorerRequestDto req) {
 
-        System.out.println("fetchCostData req : " + req);
+        log.info("fetchCostData req : " + req);
 
-        if (req.getStartDate().isAfter(req.getEndDate())) {
-            throw new IllegalArgumentException("Start date cannot be after end date");
-        }
+        try {
+            if (req.getStartDate().isAfter(req.getEndDate())) {
+                throw new IllegalArgumentException("Start date cannot be after end date");
+            }
 
-    DataFrame df = session.sql("select * from CLOUDBALANCE.PUBLIC.CLOUD_COST_TABLE");
+            DataFrame df = session.sql("select * from CLOUDBALANCE.PUBLIC.CLOUD_COST_TABLE");
 
-        df = df.filter(
-                col("BILL_DATE").between(
-                        lit(req.getStartDate()),
-                        lit(req.getEndDate())
-                )
-        );
+            df = df.filter(
+                    col("BILL_DATE").between(
+                            lit(req.getStartDate()),
+                            lit(req.getEndDate())
+                    )
+            );
 
-        df = applyFilter(df, "SERVICE", req.getService());
-        df = applyFilter(df, "ACCOUNT_ID", req.getAccountId());
-        df = applyFilter(df, "INSTANCE_TYPE", req.getInstanceType());
-        df = applyFilter(df, "USAGE_TYPE", req.getUsageType());
-        df = applyFilter(df, "PLATFORM", req.getPlatform());
-        df = applyFilter(df, "REGION", req.getRegion());
-        df = applyFilter(df, "USAGE_TYPE_GROUP", req.getUsageTypeGroup());
-        df = applyFilter(df, "PURCHASE_OPTION", req.getPurchaseOption());
-        df = applyFilter(df, "API_OPERATION", req.getApiOperation());
-        df = applyFilter(df, "RESOURCE", req.getResource());
-        df = applyFilter(df, "AVAILABILITY_ZONE", req.getAvailabilityZone());
-        df = applyFilter(df, "TENANCY", req.getTenancy());
-        df = applyFilter(df, "LEGAL_ENTITY", req.getLegalEntity());
-        df = applyFilter(df, "BILLING_ENTITY", req.getBillingEntity());
+            df = applyFilter(df, "SERVICE", req.getService());
+            df = applyFilter(df, "ACCOUNT_ID", req.getAccountId());
+            df = applyFilter(df, "INSTANCE_TYPE", req.getInstanceType());
+            df = applyFilter(df, "USAGE_TYPE", req.getUsageType());
+            df = applyFilter(df, "PLATFORM", req.getPlatform());
+            df = applyFilter(df, "REGION", req.getRegion());
+            df = applyFilter(df, "USAGE_TYPE_GROUP", req.getUsageTypeGroup());
+            df = applyFilter(df, "PURCHASE_OPTION", req.getPurchaseOption());
+            df = applyFilter(df, "API_OPERATION", req.getApiOperation());
+            df = applyFilter(df, "RESOURCE", req.getResource());
+            df = applyFilter(df, "AVAILABILITY_ZONE", req.getAvailabilityZone());
+            df = applyFilter(df, "TENANCY", req.getTenancy());
+            df = applyFilter(df, "LEGAL_ENTITY", req.getLegalEntity());
+            df = applyFilter(df, "BILLING_ENTITY", req.getBillingEntity());
 
-        DataFrame result = df
-                .withColumn("USAGE_MONTH", month(col("BILL_DATE")))
-                .groupBy(new Column[]{
-                        col(req.getGroupBy()),
-                        col("USAGE_MONTH")
-                })
-                .agg(new Column[]{
-                        sum(col("COST")).as("TOTAL_COST")
-                });
+            DataFrame result = df
+                    .withColumn("USAGE_MONTH", month(col("BILL_DATE")))
+                    .groupBy(new Column[]{
+                            col(req.getGroupBy()),
+                            col("USAGE_MONTH")
+                    })
+                    .agg(new Column[]{
+                            sum(col("COST")).as("TOTAL_COST")
+                    });
 
-        Row[] rows = result.collect();
+            Row[] rows = result.collect();
 
-        System.out.println("Rows: " + Arrays.toString(rows));
+            log.info("Rows: " + Arrays.toString(rows));
 
-        Map<String, Map<String, Double>> map = new HashMap<>();
+            Map<String, Map<String, Double>> map = new HashMap<>();
 
-        for (Row row : rows) {
-            String key = String.valueOf(row.get(0));
+            for (Row row : rows) {
+                String key = String.valueOf(row.get(0));
 //            String key = row.getString(0);
-            String month = "M" + row.getInt(1);
+                String month = "M" + row.getInt(1);
 //            double cost = row.getDouble(2);
 
-            double cost = row.getDecimal(2).doubleValue();
+//                double cost = row.getDecimal(2).doubleValue();
 
-            map.computeIfAbsent(key, k -> new HashMap<>())
-                    .put(month, cost);
+                BigDecimal bd = row.getDecimal(2);
+                double cost = bd != null ? bd.doubleValue() : 0.0;
+
+
+                map.computeIfAbsent(key, k -> new HashMap<>())
+                        .put(month, cost);
+            }
+
+
+            List<CostExplorerResponseDto> response = new ArrayList<>();
+            map.forEach((k, v) -> response.add(new CostExplorerResponseDto(k, v)));
+
+            return response;
+        } catch (SnowparkClientException ex) {
+            log.error("Snowflake error", ex);
+            throw new BusinessException("Cost data unavailable");
         }
 
 
-        List<CostExplorerResponseDto> response = new ArrayList<>();
-        map.forEach((k, v) -> response.add(new CostExplorerResponseDto(k, v)));
-
-        return response;
     }
 
 

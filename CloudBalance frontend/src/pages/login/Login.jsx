@@ -53,8 +53,6 @@ export const Login = () => {
 
         setLoading(true);
 
-        // if (!email || !password) return;
-
         const loginCredentials = {
             email: email,
             password: password
@@ -65,8 +63,7 @@ export const Login = () => {
                 headers: { "Content-Type": "application/json" }
             })
 
-            // if (res.status == 200) {
-            // localStorage.setItem("Islogin", "true");
+           
             localStorage.setItem("token", res.data.token);
             console.log("Role: ", res.data.role);
             if (res.data.role != 'Customer') {
@@ -76,36 +73,13 @@ export const Login = () => {
                 navigate('/dashboard/costexplorer')
             }
             dispatch(userData(res.data))
-            // }
-            // else {
-            //     setEmptyName(true)
-            //     setEmptyPassword(true)
-            // }
+        
             setLoading(false);
         }
         catch (err) {
             toast.error(err?.response?.data?.message || "Login Failed");
             setLoading(false);
         }
-
-
-        // if (name && password) {
-        //     localStorage.setItem("Islogin", "true");
-        //     navigate('/dashboard')
-        // }
-        // else if(!name){
-        //     setEmptyName(true)
-        // }
-        // else if(!password){
-        //     setEmptyPassword(true)
-        // }
-        // else {
-        //     setEmptyName(true)
-        //     setEmptyPassword(true)
-        // }
-
-        // console.log("name : ", name);
-        // console.log("Password : ", password);
 
 
     }
@@ -135,7 +109,6 @@ export const Login = () => {
                         <div className='relative'>
                             <label className='text-left text-[14px] text-[#333]' htmlFor="password">Password</label>
                             <br />
-                            {/* <input onChange={(e) => setPassword(e.target.value)} className='border border-[#DBDBDB] w-[471px] h-[43px] mt-3.5 rounded-sm px-3 placeholder:text-[#DBDBDB]' id='password' type='password' placeholder='Password' /> */}
                             <input
                                 type={showPassword ? "text" : "password"}
                                 onChange={(e) => setPassword(e.target.value)}
@@ -157,8 +130,6 @@ export const Login = () => {
                                 <p className="text-red-500 text-sm mt-1">This field is required</p>
                             }
                         </div>
-
-                        {/* <button type='submit' onClick={handleLogin} className='bg-[#4398d7] text-white text-base w-[471px] h-[43px] rounded-sm mt-8 hover:shadow-lg hover:shadow-[#4398d7]/40 transition-all duration-300' >LOGIN</button> */}
 
                         <button
                             type="button"

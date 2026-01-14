@@ -3,6 +3,9 @@ package com.samir.cloudbalance.services;
 import com.samir.cloudbalance.dto.AccountInfoDto;
 import com.samir.cloudbalance.dto.AccountResponseDto;
 import com.samir.cloudbalance.dto.AssignAccountsDto;
+import com.samir.cloudbalance.exception.BusinessException;
+import com.samir.cloudbalance.exception.ResourceNotFoundException;
+import com.samir.cloudbalance.exception.UnauthorizedException;
 import com.samir.cloudbalance.model.AccountEntity;
 import com.samir.cloudbalance.model.UserEntity;
 import com.samir.cloudbalance.repository.AccountRepository;
@@ -33,7 +36,7 @@ public class AccountService {
         AccountEntity existingAccount = accountRepo.findByArnNumber(accountInfoDto.getArnNumber());
 
         if(existingAccount != null){
-            throw new RuntimeException("Account with this ARN number is already exist.");
+            throw new BusinessException("Account with this ARN number is already exist.");
         }
 
         AccountEntity accountEntity = new AccountEntity();
@@ -42,7 +45,7 @@ public class AccountService {
         accountEntity.setAccountName(accountInfoDto.getAccountName());
         accountEntity.setArnNumber(accountInfoDto.getArnNumber());
 
-        System.out.println(accountEntity);
+        log.info("accountEntity: " + accountEntity);
         accountRepo.save(accountEntity);
 
         AccountResponseDto responseDTO = new AccountResponseDto();
@@ -76,9 +79,10 @@ public class AccountService {
     public void assignAccountsToUser(AssignAccountsDto assignAccountsDto){
 
         UserEntity user = userRepo.findById(assignAccountsDto.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found!"));
 
         List<AccountEntity> accountsToAssign = accountRepo.findAllById(assignAccountsDto.getAccountsIds());
+
 
                // save from duplicate items in acconts
         for (AccountEntity account : accountsToAssign) {
@@ -92,6 +96,11 @@ public class AccountService {
     public List<AccountInfoDto> getAccountsForCurrentUser(Authentication auth){
 
         UserEntity user = (UserEntity) auth.getPrincipal();
+
+        if (!(auth.getPrincipal() instanceof UserEntity userr)) {
+            throw new UnauthorizedException("Invalid authentication");
+        }
+
 
         return user.getAssignedAccounts().stream().map(
                 account -> {

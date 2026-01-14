@@ -20,7 +20,6 @@ export const AccountAssignment = ({ selectedAccounts, setSelectedAccounts }) => 
 
                 if (!isMounted) return;
 
-                // remove already assigned accounts
                 const selectedIds = new Set(selectedAccounts.map(acc => acc.accountId));
 
                 const unassigned = res.data.filter(

@@ -18,19 +18,18 @@ import { useSelector } from 'react-redux';
 
 const Onboarding = () => {
 
-    
+
     const navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState({
         arnNumber: '',
         accountId: '',
         accountName: '',
-        // roleName: 'CK-Tuner-Role-dev2'
     });
-    
-    
+
+
     const validData = !!(formData.arnNumber && formData.accountId && formData.accountName);
-    
+
     // console.log("validData : ", validData)
     console.log({
         arnNumber: formData.arnNumber,
@@ -49,16 +48,16 @@ const Onboarding = () => {
 
     useEffect(() => {
         setPageTitle("");
-        
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-    
+
     const reduxUser = useSelector(state => state.sidebar.user)
 
-    if(reduxUser.role == 'Customer' || reduxUser.role == 'ReadOnly'){
+    if (reduxUser.role == 'Customer' || reduxUser.role == 'ReadOnly') {
         return <Navigate to='/dashboard/costexplorer' />
     }
-    
+
     const steps = [
         { id: 1, name: 'Create an IAM Role', label: 'A. Create an IAM Role' },
         { id: 2, name: 'Add Customer Managed Policies', label: 'B. Add Customer Managed Policies' },
@@ -92,15 +91,15 @@ const Onboarding = () => {
 
 
 
-// const addAccount = () => {
+    // const addAccount = () => {
 
-//     const res = axiosInstance.post('/account', formData);
+    //     const res = axiosInstance.post('/account', formData);
 
-//     console.log("Data from Account post API call : ", res);
+    //     console.log("Data from Account post API call : ", res);
 
-//     navigate("/dashboard/user");
-    
-// }
+    //     navigate("/dashboard/user");
+
+    // }
 
 
     const handleNext = async () => {
@@ -110,14 +109,14 @@ const Onboarding = () => {
             return;
         }
 
-        try{
+        try {
             const res = await axiosInstance.post("/account", formData);
             console.log("Data from create account API call", res)
 
             toast.success("Account Created Successfully")
             navigate('/dashboard/user')
         }
-        catch(err){
+        catch (err) {
             console.log("En error occured: ", err);
             toast.error("Account Creation Failed")
         }
@@ -171,7 +170,7 @@ const Onboarding = () => {
 
     return (
         <div className="min-h-screen bg-gray-100 -mt-6 -ml-3">
-            {/* Progress Bar */}
+           
             <div className="border-b border-gray-200 px-8 pt-4 bg-gray-50">
                 <div className="flex items-center gap-10">
                     {steps.map((step, index) => (
@@ -190,7 +189,7 @@ const Onboarding = () => {
                                     <span className={`ml-2 text-xs font-medium flex  ${step.id <= currentStep ? 'text-gray-900' : 'text-gray-400'
                                         }`}>
                                         {step.label}
-                                        {/* <div > */}
+                                        
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 24 24"
@@ -206,7 +205,7 @@ const Onboarding = () => {
                                                 strokeLinejoin="round"
                                             />
                                         </svg>
-                                        {/* </div> */}
+                                        
 
                                     </span>
                                 </div>
@@ -232,11 +231,10 @@ const Onboarding = () => {
             <div className="mx-10 bg-white rounded-lg shadow-sm">
 
 
-                {/* Content */}
                 <div className="p-8">
                     {currentStep === 1 && (
                         <div className="space-y-6">
-                            {/* Step 1 */}
+                            
                             <div className="flex items-start">
                                 <div className="flex items-center justify-center w-6 h-6 rounded-full bg-gray-400 text-white text-sm font-medium mr-3 mt-0.5">
                                     1
@@ -248,7 +246,7 @@ const Onboarding = () => {
                                 </div>
                             </div>
 
-                            {/* Step 2 */}
+                            
                             <div className="flex items-start">
                                 <div className="flex items-center justify-center w-6 h-6 rounded-full bg-gray-400 text-white text-sm font-medium mr-3 mt-0.5">
                                     2
@@ -274,7 +272,7 @@ const Onboarding = () => {
                                 </div>
                             </div>
 
-                            {/* Step 3 */}
+                            
                             <div className="flex items-start">
                                 <div className="flex items-center justify-center w-6 h-6 rounded-full bg-gray-400 text-white text-sm font-medium mr-3 mt-0.5">
                                     3
@@ -286,7 +284,7 @@ const Onboarding = () => {
                                 </div>
                             </div>
 
-                            {/* Step 4 */}
+                            
                             <div className="flex items-start">
                                 <div className="flex items-center justify-center w-6 h-6 rounded-full bg-gray-400 text-white text-sm font-medium mr-3 mt-0.5">
                                     4
@@ -311,7 +309,7 @@ const Onboarding = () => {
                                     </div> */}
 
                                     <div className="relative max-w-80">
-                                        {/* Copy Button */}
+                                        
                                         <button
                                             type="button"
                                             onClick={() => copyToClipboard(datatoCopy)}
@@ -320,7 +318,7 @@ const Onboarding = () => {
                                             <Copy className="w-4 h-4" />
                                         </button>
 
-                                        {/* Input */}
+                                        
                                         <input
                                             type="text"
                                             value={datatoCopy}
@@ -332,7 +330,7 @@ const Onboarding = () => {
                                 </div>
                             </div>
 
-                            {/* Step 5 */}
+                            
                             <div className="flex items-start">
                                 <div className="flex items-center justify-center w-6 h-6 rounded-full bg-gray-400 text-white text-sm font-medium mr-3 mt-0.5">
                                     5
@@ -347,7 +345,7 @@ const Onboarding = () => {
                                 </div>
                             </div>
 
-                            {/* Step 6 */}
+                           
                             <div className="flex items-start">
                                 <div className="flex items-center justify-center w-6 h-6 rounded-full bg-gray-400 text-white text-sm font-medium mr-3 mt-0.5">
                                     6
@@ -535,7 +533,7 @@ const Onboarding = () => {
                                 </div>
 
                                 <div className="relative max-w-80 my-6">
-                                    {/* Copy Button */}
+                                    
                                     <button
                                         type="button"
                                         onClick={() => copyToClipboard("ck-tuner-275595855473-hourly-cur")}
@@ -544,7 +542,7 @@ const Onboarding = () => {
                                         <Copy className="w-4 h-4" />
                                     </button>
 
-                                    {/* Input */}
+                                    
                                     <input
                                         type="text"
                                         value={"ck-tuner-275595855473-hourly-cur"}
@@ -621,7 +619,7 @@ const Onboarding = () => {
                                 <p className='text-gray-700 text-xs'>Report path prefix:</p>
 
                                 <div className="relative max-w-80 my-6">
-                                    {/* Copy Button */}
+                                    
                                     <button
                                         type="button"
                                         onClick={() => copyToClipboard("275595855473")}
@@ -630,7 +628,7 @@ const Onboarding = () => {
                                         <Copy className="w-4 h-4" />
                                     </button>
 
-                                    {/* Input */}
+                                    
                                     <input
                                         type="text"
                                         value={"275595855473"}
@@ -690,7 +688,7 @@ const Onboarding = () => {
                     )}
                 </div>
 
-                {/* Footer Buttons */}
+                
                 <div className="border-t border-gray-200 px-8 py-4 flex items-center justify-between">
                     <button
                         onClick={handleCancel}
@@ -710,7 +708,7 @@ const Onboarding = () => {
                         <button
                             onClick={handleNext}
                             // disabled={currentStep === steps.length}
-                            disabled = {!validData}
+                            disabled={!validData}
                             className={`px-6 py-2 rounded font-medium ${!validData
                                 ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                                 : 'bg-blue-800 text-white hover:bg-blue-800'

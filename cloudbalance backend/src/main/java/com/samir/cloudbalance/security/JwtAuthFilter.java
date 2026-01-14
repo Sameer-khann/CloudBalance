@@ -5,6 +5,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+@Slf4j
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 //    OncePerRequestFilter for JWTAuthentication filter , Prevents duplicate auth
@@ -71,9 +73,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 UserDetails userDetails =
                         userDetailsService.loadUserByUsername(email);
 
-                System.out.println("UserDetails : " + userDetails);
-                System.out.println("Authority : " + userDetails.getAuthorities());
-//                System.out.println("Authority username : " + userDetails.getUsername());
+                log.info("UserDetails : " + userDetails);
+                log.info("Authority : " + userDetails.getAuthorities());
+//                log.info("Authority username : " + userDetails.getUsername());
 
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(
@@ -91,7 +93,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         }
 
-        System.out.println("Auth set: " + SecurityContextHolder
+        log.info("Auth set: " + SecurityContextHolder
                 .getContext()
                 .getAuthentication());
 

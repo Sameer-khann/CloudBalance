@@ -3,6 +3,7 @@ package com.samir.cloudbalance.services;
 import com.samir.cloudbalance.dto.UserRequestDto;
 import com.samir.cloudbalance.dto.UserResponseDto;
 import com.samir.cloudbalance.dto.UserUpdateRequestDto;
+import com.samir.cloudbalance.exception.ResourceNotFoundException;
 import com.samir.cloudbalance.exception.UserAlreadyExistsException;
 import com.samir.cloudbalance.model.AccountEntity;
 import com.samir.cloudbalance.model.UserEntity;
@@ -12,6 +13,7 @@ import com.samir.cloudbalance.security.UserRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,7 +30,7 @@ public class UserService {
     public AccountRepository accountRepo;
 
     @Autowired
-    public BCryptPasswordEncoder passwordEncoder;
+    public PasswordEncoder passwordEncoder;
 
     public UserResponseDto mapToResponse(UserEntity user){
 
@@ -73,7 +75,7 @@ public class UserService {
             user.getAssignedAccounts().addAll(accounts);
         }
 
-        System.out.println("User : " + userRequestDto);
+        log.info("User : " + userRequestDto);
         userRepo.save(user);
     }
 
@@ -81,7 +83,7 @@ public class UserService {
 
         log.info("Updating user with ID: {}", dto.getId());
         UserEntity existingUserEntity = userRepo.findById(dto.getId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         if(userRepo.existsByEmailAndIdNot(dto.getEmail(), dto.getId())){
             throw new UserAlreadyExistsException("Email already in use by another user");
@@ -89,7 +91,7 @@ public class UserService {
 
 //        List<UserEntity> users = userRepo.findByEmailOrderByIdDesc(userRequestDto.getEmail());
 
-        System.out.println("this is " + dto);
+        log.info("this is " + dto);
 
         existingUserEntity.setFirstName(dto.getFirstName());
         existingUserEntity.setLastName(dto.getLastName());

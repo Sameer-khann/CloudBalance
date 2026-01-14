@@ -3,7 +3,9 @@ package com.samir.cloudbalance.services;
 import com.samir.cloudbalance.controller.AuthController;
 import com.samir.cloudbalance.dto.LoginRequestDto;
 import com.samir.cloudbalance.dto.LoginResponseDto;
+import com.samir.cloudbalance.exception.BusinessException;
 import com.samir.cloudbalance.exception.ResourceNotFoundException;
+import com.samir.cloudbalance.exception.UnauthorizedException;
 import com.samir.cloudbalance.model.BlacklistedTokenEntity;
 import com.samir.cloudbalance.model.UserEntity;
 import com.samir.cloudbalance.repository.BlacklistedTokenRepository;
@@ -43,10 +45,16 @@ public class AuthService {
 
         //Order matter krta hai
         if(!passwordEncoder.matches(loginRequest.getPassword(), validUser.getPassword())){
-            throw new ResourceNotFoundException("Invalid email or password.");
+            throw new UnauthorizedException("Invalid email or password.");
         }
 
-        String token = jwtUtil.generateToken(validUser.getEmail(), validUser.getRole().name());
+        String token;
+
+        try {
+            token = jwtUtil.generateToken(validUser.getEmail(), validUser.getRole().name());
+        } catch (Exception e) {
+            throw new BusinessException("Login failed");
+        }
 
         return new LoginResponseDto(
             validUser.getId(),
@@ -60,6 +68,12 @@ public class AuthService {
 
     public void logout(String token) {
 
-        blacklistedTokenRepo.save(new BlacklistedTokenEntity(token, jwtUtil.extractExpiry(token)));
+//        blacklistedTokenRepo.save(new BlacklistedTokenEntity(token, jwtUtil.extractExpiry(token)));
+
+        try {
+            blacklistedTokenRepo.save(new BlacklistedTokenEntity(token, jwtUtil.extractExpiry(token)));
+        } catch (Exception e) {
+            throw new BusinessException("Logout failed");
+        }
     }
 }
