@@ -29,7 +29,7 @@ public class CostExplorerController {
         service.getalldata();
     }
 
-    @PreAuthorize("hasRole('Admin')")
+//    @PreAuthorize("hasRole('Admin')")
     @PostMapping
     public List<CostExplorerResponseDto> getCostData(
            @Valid @RequestBody CostExplorerRequestDto request

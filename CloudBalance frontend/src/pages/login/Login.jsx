@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { toast } from 'sonner'
 
@@ -27,16 +27,25 @@ export const Login = () => {
     const authToken = useSelector(state => state.sidebar.user)
 
 
-    if (authToken && authToken.token) {
+    // if (authToken && authToken.token) {
 
-        if (authToken.role != 'Customer') {
-            return <Navigate to='/dashboard' replace />
-        }
-        else {
-            return <Navigate to='/dashboard/costexplorer' replace />
-        }
-    }
+    //     if (authToken.role != 'Customer') {
+    //         return <Navigate to='/dashboard' replace />
+    //     }
+    //     else {
+    //         return <Navigate to='/dashboard/costexplorer' replace />
+    //     }
+    // }
 
+    useEffect(() => {
+        if (authToken?.token) {
+            if (authToken.role !== "Customer") {
+                navigate("/dashboard", { replace: true });
+            } else {
+                navigate("/dashboard/costexplorer", { replace: true });
+            }
+        }
+    }, [authToken, navigate]);
 
     console.log("Auth Token: ", authToken)
 
@@ -63,7 +72,7 @@ export const Login = () => {
                 headers: { "Content-Type": "application/json" }
             })
 
-           
+
             localStorage.setItem("token", res.data.token);
             console.log("Role: ", res.data.role);
             if (res.data.role != 'Customer') {
@@ -73,7 +82,7 @@ export const Login = () => {
                 navigate('/dashboard/costexplorer')
             }
             dispatch(userData(res.data))
-        
+
             setLoading(false);
         }
         catch (err) {

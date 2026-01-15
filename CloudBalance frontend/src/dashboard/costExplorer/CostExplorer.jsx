@@ -797,7 +797,7 @@ export const CostExplorer = () => {
                 divLineAlpha: "20",
                 baseFontSize: "13",
                 baseFont: "Inter, sans-serif",
-                plotToolText: "$ $value"
+                // plotToolText: "$ $value"
             },
             categories: [{ category: chartData.categories }],
             dataset: chartData.dataset

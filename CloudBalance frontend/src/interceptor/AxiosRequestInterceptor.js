@@ -1,6 +1,9 @@
 import axios from "axios";
 
 import {toast} from "sonner";
+import { redirectToLogin } from "../utils/AuthRedirect/authRedirect";
+import { store } from "../redux/store";
+import { deleteUser } from "../redux/actions";
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:8080",
@@ -33,9 +36,13 @@ axiosInstance.interceptors.response.use(
       localStorage.removeItem("token");
       localStorage.removeItem("user");
 
+      store.dispatch(deleteUser())
+
       toast.success("User not found.")
 
-      window.location.href = "/";
+      // window.location.href = "/";
+
+      redirectToLogin();
     }
 
     return Promise.reject(error);

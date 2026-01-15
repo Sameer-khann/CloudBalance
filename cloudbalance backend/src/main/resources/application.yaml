@@ -18,7 +18,7 @@ spring:
 
 jwt:
   secret: SameerKhanIsAFullStackDeveloperAtCloudKeeper
-  expiration: 7200000
+  expiration: 900000
 
 snowflake:
   url: https://nwbzkah-gk39699.snowflakecomputing.com

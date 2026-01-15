@@ -1,5 +1,6 @@
 package com.samir.cloudbalance.configuration;
 
+import com.samir.cloudbalance.exception.JwtAuthEntryPoint;
 import com.samir.cloudbalance.security.JwtAuthFilter;
 import com.samir.cloudbalance.security.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -29,14 +30,17 @@ public class SecurityConfig {
     @Autowired
     public JwtAuthFilter jwtAuthFilter;
 
+    @Autowired
+    private JwtAuthEntryPoint jwtAuthEntryPoint;
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.
                 cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) //explore other options here than STATELESS
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) //explore other options here than STATELESS
                 )
 
                 .formLogin(form -> form.disable())
@@ -45,17 +49,21 @@ public class SecurityConfig {
                 .logout(logout -> logout.disable())
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .requestMatchers("/login", "/api/logout", "/error").permitAll()
 //                                .requestMatchers("/api/cost-explorer/filters").permitAll()
 //                                .requestMatchers("/adduser", "/edituser").hasRole("Admin")
 //                                .requestMatchers("/edituser").hasRole("Admin")
 //                                .requestMatchers("/account/**", "/assign").authenticated()
-                        .anyRequest().authenticated()
+                                .anyRequest().authenticated()
+                )
+                .exceptionHandling(exception ->
+                        exception.authenticationEntryPoint(jwtAuthEntryPoint)
                 );
 
-                http.addFilterBefore(jwtAuthFilter,
-                        UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthFilter,
+                UsernamePasswordAuthenticationFilter.class);
+
 
 //        http
 //        .cors(Customizer.withDefaults())
@@ -75,7 +83,7 @@ public class SecurityConfig {
 
 
     @Bean
-    public UrlBasedCorsConfigurationSource corsConfigurationSource(){
+    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
 
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of("http://localhost:5173"));
@@ -91,7 +99,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
 
         return new BCryptPasswordEncoder();
     }
