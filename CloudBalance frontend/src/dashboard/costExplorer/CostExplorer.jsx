@@ -729,7 +729,7 @@ export const CostExplorer = () => {
                 };
 
                 const res = await axios.post("/api/cost-explorer", payload);
-                console.log("Response of Cost API : ", res);
+                // console.log("Response of Cost API : ", res);
 
                 const mapped = res.data.map(item => ({
                     service: item.groupKey,
@@ -741,7 +741,7 @@ export const CostExplorer = () => {
                     dec2025: item.monthlyCost.M12 || 0
                 }));
 
-                console.log("Mapped data at frontend: ", mapped);
+                // console.log("Mapped data at frontend: ", mapped);
                 setTableData(mapped);
             } catch (error) {
                 console.error("Error fetching cost data:", error);
@@ -763,7 +763,7 @@ export const CostExplorer = () => {
         5
     );
 
-    console.log("chartSourceData : ", chartSourceData);
+    // console.log("chartSourceData : ", chartSourceData);
 
     const chartData = generateChartDataFromTable(
         chartSourceData,

@@ -18,7 +18,7 @@ export const Sidebar = () => {
     const isCustomer = reduxUser.role == 'Customer' ? true : false;
     const isReadOnly = reduxUser.role == 'ReadOnly' ? true : false;
 
-    console.log("isCustomer: ", isCustomer);
+    // console.log("isCustomer: ", isCustomer);
 
     // console.log("open redux : ", isOpen);
 

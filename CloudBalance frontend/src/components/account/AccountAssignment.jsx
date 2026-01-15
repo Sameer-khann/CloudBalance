@@ -5,11 +5,11 @@ export const AccountAssignment = ({ selectedAccounts, setSelectedAccounts }) => 
 
     const [availableAccounts, setAvailableAccounts] = useState([]);
 
-    console.log("selectedAccounts: ", selectedAccounts);
+    // console.log("selectedAccounts: ", selectedAccounts);
 
 
-    console.log("availableAccounts: ",availableAccounts);
-    console.log("selectedAccounts: ",selectedAccounts);
+    // console.log("availableAccounts: ",availableAccounts);
+    // console.log("selectedAccounts: ",selectedAccounts);
 
     useEffect(() => {
         let isMounted = true;
@@ -78,15 +78,15 @@ export const AccountAssignment = ({ selectedAccounts, setSelectedAccounts }) => 
     // }, []);
 
     const assignAccount = (account) => {
-        console.log("assignAccount called")
-        console.log("SelectedAccounts before setting assignAccount: ", selectedAccounts)
+        // console.log("assignAccount called")
+        // console.log("SelectedAccounts before setting assignAccount: ", selectedAccounts)
         setSelectedAccounts(prev => [...prev, account]);
         setAvailableAccounts(prev => prev.filter(a => a.accountId !== account.accountId));
-        console.log("SelectedAccounts before setting assignAccount: ", selectedAccounts)
+        // console.log("SelectedAccounts before setting assignAccount: ", selectedAccounts)
     };
 
     const unAssignAccount = (account) => {
-        console.log("unAssignAccount called")
+        // console.log("unAssignAccount called")
         setAvailableAccounts(prev => [...prev, account]);
         setSelectedAccounts(prev => prev.filter(a => a.accountId !== account.accountId));
     };

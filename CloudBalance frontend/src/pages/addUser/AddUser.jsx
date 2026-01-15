@@ -87,7 +87,7 @@ export const AddUser = ({ buttonText, editData }) => {
                     assignedAccountIds: userFormData.role == "Customer" ? assignedAccounts.map(account => account.accountId) : []
                 }
 
-                console.log("payload: ", payload)
+                // console.log("payload: ", payload)
 
                 const res = await axios.put('http://localhost:8080/user', payload,
                     {
@@ -119,8 +119,8 @@ export const AddUser = ({ buttonText, editData }) => {
                 navigate('/dashboard/user');
             }
             catch (err) {
-                console.log("Error : ", err?.response?.data?.message)
-                toast.error(err?.response?.data?.message)
+                // console.log("Error : ", err?.response?.data?.message)
+                toast.error("User updation failed.")
             }
 
         }
@@ -162,8 +162,8 @@ export const AddUser = ({ buttonText, editData }) => {
                 navigate('/dashboard/user');
             }
             catch (err) {
-                console.log("Error : ", err?.response?.data?.message || "Something went wrong")
-                toast.error(err?.response?.data?.message)
+                // console.log("Error : ", err?.response?.data?.message || "Something went wrong")
+                toast.error("User not created.")
             }
         }
 

@@ -31,12 +31,12 @@ const Onboarding = () => {
     const validData = !!(formData.arnNumber && formData.accountId && formData.accountName);
 
     // console.log("validData : ", validData)
-    console.log({
-        arnNumber: formData.arnNumber,
-        accountId: formData.accountId,
-        accountName: formData.accountName,
-        validData
-    });
+    // console.log({
+    //     arnNumber: formData.arnNumber,
+    //     accountId: formData.accountId,
+    //     accountName: formData.accountName,
+    //     validData
+    // });
 
     // const [datatoCopy, setDataToCopy] = useSta?te("CK-Tuner-Role-dev2")
 
@@ -111,13 +111,13 @@ const Onboarding = () => {
 
         try {
             const res = await axiosInstance.post("/account", formData);
-            console.log("Data from create account API call", res)
+            // console.log("Data from create account API call", res)
 
             toast.success("Account Created Successfully")
             navigate('/dashboard/user')
         }
         catch (err) {
-            console.log("En error occured: ", err);
+            // console.log("En error occured: ", err);
             toast.error("Account Creation Failed")
         }
     };
@@ -145,7 +145,7 @@ const Onboarding = () => {
             toast.success("Data copied to clipboard");
         } catch (err) {
             toast.error("Failed to copy ");
-            console.log("toaster Error : ", err)
+            // console.log("toaster Error : ", err)
         }
     };
 

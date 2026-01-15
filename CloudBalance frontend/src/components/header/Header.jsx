@@ -54,7 +54,7 @@ export const Header = () => {
         // await persistor.purge();
 
         dispatch(deleteUser());
-        console.log("Delete user from redux");
+        // console.log("Delete user from redux");
         navigate("/");
     };
 

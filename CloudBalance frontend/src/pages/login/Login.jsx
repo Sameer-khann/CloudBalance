@@ -47,7 +47,7 @@ export const Login = () => {
         }
     }, [authToken, navigate]);
 
-    console.log("Auth Token: ", authToken)
+    // console.log("Auth Token: ", authToken)
 
 
     const handleLogin = async () => {
@@ -74,7 +74,7 @@ export const Login = () => {
 
 
             localStorage.setItem("token", res.data.token);
-            console.log("Role: ", res.data.role);
+            // console.log("Role: ", res.data.role);
             if (res.data.role != 'Customer') {
                 navigate('/dashboard')
             }
